@@ -1,3 +1,17 @@
+# Custom
+
+rebuild.sh
+robot*.vxd
+logs
+models
+data/experiment*
+workspace
+tmp
+VoxCAD
+Voxelyze3
+vx3_node_worker
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
