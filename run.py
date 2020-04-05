@@ -59,7 +59,7 @@ while(True):
     msg = f"Simulation for generation {generation} finished.\nThe top 3 bestfit fitness score of this generation are \n"
     for i in range(3):
         msg += f"{population['firstname'][sorted_result['id'][i]]} {population['lastname'][sorted_result['id'][i]]}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
-    print(msg)
+    print(msg, flush=True)
 
     if generation%100==0:
         import sida.slackbot.bot as bot
