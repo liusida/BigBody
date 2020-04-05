@@ -2,7 +2,6 @@
 
 rebuild.sh
 robot*.vxd
-logs
 models
 data/experiment*
 workspace
