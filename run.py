@@ -61,7 +61,7 @@ while(True):
         msg += f"{population['firstname'][sorted_result['id'][i]]} {population['lastname'][sorted_result['id'][i]]}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
     print(msg)
 
-    if generation%100:
+    if generation%100==0:
         import sida.slackbot.bot as bot
         bot.send(msg, 1, "GUB0XS56E")
 

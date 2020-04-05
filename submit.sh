@@ -5,7 +5,7 @@
 #SBATCH --nodelist=dg-gpunode02
 #SBATCH --gres=gpu:6
 #SBATCH --mem=128G
-#SBATCH --time=1:00:00
+#SBATCH --time=4:00:00
 #SBATCH --job-name=BigBody
 # %x=job-name %j=jobid
 #SBATCH --output=%x_%j.out
