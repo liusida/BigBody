@@ -1,6 +1,7 @@
-# This is the base class for any mutation method
-# TODO: to get rid of random network part and make this file more general
-
+# RandomNetMutation
+# Use a random weighted neural network to expand the genotype string into a 3D phaseoffset parameter
+# genotype: 32 byte string
+#
 from .. import helper
 from .. import workflow
 from .. import names as names
@@ -25,7 +26,7 @@ class GeNet(nn.Module):
         x = self.conv1(x)
         return x
 
-class Mutation:
+class RandomNetMutation:
     def __init__(self, body_dimension):
         """ Init Mutation with data """
         self.body_dimension = body_dimension

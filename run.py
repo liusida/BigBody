@@ -25,7 +25,7 @@ generation = 0
 body_dimension = (10, 10, 10)
 
 vx.clear_workspace()
-mutation = vx.mutation.Mutation(body_dimension)
+mutation = vx.mutation.RandomNetMutation(body_dimension)
 
 # try to resume from last experiment
 population, generation = vx.load_last_generation(experiment_name)
