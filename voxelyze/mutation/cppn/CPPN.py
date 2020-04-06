@@ -87,7 +87,12 @@ class CPPN:
         nx.draw_networkx_edge_labels(self.graph, pos=nx.drawing.nx_pydot.graphviz_layout(self.graph, prog='dot'), edge_labels=edge_labels_1, rotate=False)
         plt.show()
 
-    def mutate(self, num_random_activation_functions=100, num_random_weight_changes=100):
+    def mutate(self, num_random_activation_functions=1, num_random_weight_changes=5):
+        for _ in range(num_random_activation_functions):
+            self.change_activation()
+        for _ in range(num_random_weight_changes):
+            self.change_weight()
+        return
         total = num_random_activation_functions + num_random_weight_changes
         # choose a mutation according to probability
         while True:
