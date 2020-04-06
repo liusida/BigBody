@@ -1,6 +1,7 @@
 import numpy as np
 
 def sigmoid(x):
+    # np.exp(large number) will cause a warning of overflow
     return 2.0 / (1.0 + np.exp(-x)) - 1.0
 
 def neg_abs(x):

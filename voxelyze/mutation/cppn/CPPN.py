@@ -127,14 +127,22 @@ class CPPN:
     def get_output(self,body_dimension):
         body = np.zeros(body_dimension)
         phaseoffset = np.zeros(body_dimension)
+        input_x = np.zeros(body_dimension)
+        input_y = np.zeros(body_dimension)
+        input_z = np.zeros(body_dimension)
+
         for i in range(body_dimension[0]):
             x = i*2/body_dimension[0] - 1
             for j in range(body_dimension[1]):
                 y = j*2/body_dimension[1] - 1
                 for k in range(body_dimension[2]):
                     z = k*2/body_dimension[2] - 1
-                    d = math.sqrt(x*x + y*y + z*z)
-                    ret = self.compute({'x':x,'y':y,'z':z,'d':d,'b':1})
-                    body[i,j,k] = ret["body"]
-                    phaseoffset[i,j,k] = ret["phaseoffset"]
+                    input_x[i,j,k] = x
+                    input_y[i,j,k] = y
+                    input_z[i,j,k] = z
+
+        input_d = np.sqrt(np.power(input_x,2) + np.power(input_y,2)  + np.power(input_z,2) )
+        ret = self.compute({'x':input_x,'y':input_y,'z':input_z,'d':input_d,'b':1})
+        body = ret["body"]
+        phaseoffset = ret["phaseoffset"]
         return body, phaseoffset
