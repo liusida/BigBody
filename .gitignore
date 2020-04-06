@@ -6,6 +6,8 @@ models
 data/experiment*
 workspace
 tmp
+tmp.*
+tmp_*
 VoxCAD
 Voxelyze3
 vx3_node_worker

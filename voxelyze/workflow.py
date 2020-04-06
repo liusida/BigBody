@@ -33,18 +33,12 @@ def copy_vxa(experiment_name, generation):
 
 def write_all_vxd(experiment_name, generation, population):
     vx_fields = {"body": "Body", "phaseoffset": "PhaseOffset"}
-    other_fields = []
-    anykey = None
-    for key in population.keys():
-        if key not in vx_fields:
-            other_fields.append(key)
-        anykey = key
-    for robot_id in range(len(population[anykey])):
+    for robot_id in range(len(population["phenotype"])):
         vxd_filename = f"data/experiment_{experiment_name}/generation_{generation:04}/start_population/robot_{robot_id:04}.vxd"
         xRoot = etree.Element("VXD")
         # Main Structure and PhaseOffset
-        body = population["body"][robot_id]
-        phaseoffset = population["phaseoffset"][robot_id]
+        body = population["phenotype"][robot_id]["body"]
+        phaseoffset = population["phenotype"][robot_id]["phaseoffset"]
         Z,Y,X = body.shape
         xStructure = child(xRoot, "Structure")
         xStructure.set('replace', 'VXA.VXC.Structure')
@@ -66,9 +60,12 @@ def write_all_vxd(experiment_name, generation, population):
                 str_layer = ",".join([f"{c:.03f}" for c in phaseoffset_flatten[i]])
                 layer.text = etree.CDATA(str_layer)
         # Save other fields as well
-        xOtherFields = child(xRoot, "OtherFields")
-        for key in other_fields:
-            child(xOtherFields, key).text = population[key][robot_id]
+        xOtherFields = child(xRoot, "Genotype")
+        for key in population["genotype"][robot_id]:
+            if type(population["genotype"][robot_id][key]) is str:
+                child(xOtherFields, key).text = population["genotype"][robot_id][key]
+            else:
+                child(xOtherFields, key).text = population["genotype"][robot_id][key].__str__()
         # Save to file
         with open(vxd_filename, 'wb') as file:
             file.write(etree.tostring(xRoot))
@@ -137,11 +134,13 @@ def load_last_generation(experiment_name):
     if max_generation_number==0:
         # previous generation not found
         return None,0
-    population = {"body": [], "phaseoffset": []}
+    population = {"genotype":[], "phenotype":[]}
     other_fields_initiated = False
     max_genration_foldername = f"data/experiment_{experiment_name}/{max_genration_foldername}/start_population/"
     for filename in os.listdir(max_genration_foldername):
         if filename[-4:]==".vxd":
+            robot_genotype = {}
+            robot_phenotype = {}
             xRoot = etree.parse(f"{max_genration_foldername}/{filename}")
             # Load body and phaseoffset
             x = int(xRoot.xpath("/VXD/Structure/X_Voxels")[0].text)
@@ -156,7 +155,7 @@ def load_last_generation(experiment_name):
                     line.append(int(ch))
                 lines.append(line)
             lines = np.array(lines)
-            population["body"].append(lines.reshape([z,y,x]))
+            robot_phenotype["body"] = lines.reshape([z,y,x])
             #PhaseOffset
             Layers = xRoot.xpath("/VXD/Structure/PhaseOffset/Layer")
             lines = []
@@ -166,29 +165,20 @@ def load_last_generation(experiment_name):
                     line.append(float(ch))
                 lines.append(line)
             lines = np.array(lines)
-            population["phaseoffset"].append(lines.reshape([z,y,x]))
+            robot_phenotype["phaseoffset"] = lines.reshape([z,y,x])
             #Load other fields
-            if not other_fields_initiated:
-                other_fields_initiated = True
-                other_fields = xRoot.xpath("/VXD/OtherFields")[0]
-                for key in other_fields.getchildren():
-                    population[key.tag] = []
-            other_fields = xRoot.xpath("/VXD/OtherFields")[0]
+            # if not other_fields_initiated:
+            #     other_fields_initiated = True
+            #     other_fields = xRoot.xpath("/VXD/OtherFields")[0]
+            #     for key in other_fields.getchildren():
+            #         robot[key.tag] = []
+            other_fields = xRoot.xpath("/VXD/Genotype")[0]
             for key in other_fields.getchildren():
-                population[key.tag].append(key.text)
+                robot_genotype[key.tag] = key.text
+            population["genotype"].append(robot_genotype)
+            population["phenotype"].append(robot_phenotype)
+
     return population, max_generation_number
-
-def empty_population_like(population):
-    ret = {}
-    for key in population:
-        ret[key] = []
-    return ret
-
-def add_population(src, dst):
-    anykey = list(src.keys())[0]
-    for i in range(len(src[anykey])):
-        for key in src.keys():
-            dst[key].append(src[key][i])
 
 if __name__ == "__main__":
     def test_write_vxd():
