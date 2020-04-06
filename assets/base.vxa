@@ -5,6 +5,7 @@
   </GPU>
   <Simulator>
     <EnableTargetCloseness>0</EnableTargetCloseness>
+    <ReinitializeInitialPositionAfterThisManySeconds>1</ReinitializeInitialPositionAfterThisManySeconds>
     <FitnessFunction>
       <mtVAR>x</mtVAR>
     </FitnessFunction>
@@ -37,7 +38,7 @@
       <StopConditionFormula>
         <mtSUB>
           <mtVAR>t</mtVAR>
-          <mtCONST>5</mtCONST>
+          <mtCONST>3</mtCONST>
         </mtSUB>
       </StopConditionFormula>
     </StopCondition>
