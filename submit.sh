@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --partition=dg-jup
+#SBATCH --partition=dggpu
 #SBATCH --nodes=1
-#SBATCH --ntasks=4
-#SBATCH --nodelist=dg-gpunode02
-#SBATCH --gres=gpu:6
-#SBATCH --mem=128G
-#SBATCH --time=4:00:00
+#SBATCH --ntasks=32
+#SBATCH --nodelist=dg-gpunode09
+#SBATCH --gres=gpu:8
+#SBATCH --mem=512G
+#SBATCH --time=10:00:00
 #SBATCH --job-name=BigBody
 # %x=job-name %j=jobid
 #SBATCH --output=%x_%j.out
