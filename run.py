@@ -65,9 +65,9 @@ while(True):
             msg += f"{mutation.population['genotype'][robot_id]['firstname']} {mutation.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
     print(msg, flush=True)
 
-    # if generation%100==0:
-    #     import sida.slackbot.bot as bot
-    #     bot.send(msg, 1, "GUB0XS56E")
+    if generation%3==0:
+        import sida.slackbot.bot as bot
+        bot.send(msg, 1, "GUB0XS56E")
 
     # next generation
     generation += 1
