@@ -20,10 +20,10 @@ import shutil
 import random
 random.seed(1)
 np.random.seed(1)
-experiment_name = "v040621"
+experiment_name = "v040622"
 population_size = 128
 generation = 0
-body_dimension = (20, 20, 20)
+body_dimension = (10, 10, 10)
 
 vx.clear_workspace()
 mutation = CPPNMutation(body_dimension, population_size)
@@ -33,7 +33,7 @@ mutation_dic = vx.load_last_generation(experiment_name)
 # if failed, start from scratch
 if mutation_dic is None:
     generation = 0
-    mutation.init_geno(hidden_layers=[5,5])
+    mutation.init_geno(hidden_layers=[40,30,30])
     mutation.express()
 else:
     mutation.load_dic(mutation_dic)
