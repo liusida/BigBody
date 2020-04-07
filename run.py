@@ -37,15 +37,15 @@ evolution_dic, generation = vx.load_last_generation(experiment_name)
 # if failed, start from scratch
 if evolution_dic is None:
     generation = 0
-    evolution = CPPNEvolution(body_dimension, target_population_size, mutation_rate)
+    evolution = CPPNEvolution(body_dimension(), target_population_size(), mutation_rate())
     evolution.init_geno(hidden_layers=hidden_layers)
     evolution.express()
 else:
     # resize using new body_dimension
     evolution = CPPNEvolution()
-    evolution_dic["target_population_size"] = target_population_size
-    evolution_dic["body_dimension"] = body_dimension
-    evolution_dic["mutation_rate"] = mutation_rate
+    evolution_dic["target_population_size"] = target_population_size(generation)
+    evolution_dic["body_dimension"] = body_dimension(generation)
+    evolution_dic["mutation_rate"] = mutation_rate(generation)
     evolution.load_dic(evolution_dic)
 
 # infinity evolutionary loop
@@ -75,9 +75,15 @@ while(True):
             msg += f"{evolution.population['genotype'][robot_id]['firstname']} {evolution.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
     print(msg, flush=True)
 
-    # if generation%3==0:
-    #     import sida.slackbot.bot as bot
-    #     bot.send(msg, 1, "GUB0XS56E")
+    # reporting
+    # import sida.slackbot.bot as bot
+    # bot.send(msg, 1, "GUB0XS56E")
+
+    # dynamical sceduling
+    evolution.target_population_size = target_population_size(generation)
+    evolution.body_dimension = body_dimension(generation)
+    evolution.mutation_rate = mutation_rate(generation)
+
 
     # next generation
     generation += 1
