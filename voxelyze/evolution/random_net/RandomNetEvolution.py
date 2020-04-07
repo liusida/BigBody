@@ -41,10 +41,10 @@ class RandomNetMutation:
         """
         return {"body": [], "phaseoffset": [], "genotype": [], "firstname": [], "lastname": []}
 
-    def init_geno(self, population, population_size):
+    def init_geno(self, population, target_population_size):
         """ random init, start from scratch """
         # random initialization
-        for robot_id in range(population_size):
+        for robot_id in range(target_population_size):
             # body_random = np.random.random(self.body_dimension)
             # body = np.zeros_like(body_random, dtype=int)
             # body[body_random < 0.5] = 1

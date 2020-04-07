@@ -10,7 +10,7 @@ Usage:
 
 ```
 from voxelyze.evolution.Evolution import Evolution
-m = Evolution(body_dimension=3,population_size=10)
+m = Evolution(body_dimension=3,target_population_size=10)
 m.init_geno()
 m.express()
 # run simulation
@@ -28,27 +28,27 @@ Public interface:
 """
 
 class Evolution:
-    def __init__(self, body_dimension, population_size):
+    def __init__(self, body_dimension, target_population_size, mutation_rate):
         """ init
         body_dimension = [6,6,5] for 6x6x5 robot
-        population_size is an integer
+        target_population_size is an integer
+        mutation_rate is a list of hyper-parameters
         Define what is genotype and phenotype, etc."""
         self.body_dimension = body_dimension
-        self.population_size = population_size
+        self.target_population_size = target_population_size
         self.population = {"genotype": [], "phenotype": []}
-        self.init_geno()
-        self.express()
+        self.mutation_rate = mutation_rate
+        # self.init_geno()
+        # self.express()
         self.phenotype_keys = ["body", "phaseoffset"]
         # DNA is a 32 bytes string of digits;
         # firstname and lastname are strings;
         self.genotype_keys = ["firstname", "lastname", "DNA"]
-        # mutate_rate is a list of hyper-parameters for adjusting the mutate strength
-        self.mutate_rate = []
 
     def init_geno(self):
         """ random init, start from scratch """
         self.population["genotype"] = []
-        for robot_id in range(self.population_size):
+        for robot_id in range(self.target_population_size):
             DNA = ''.join([random.choice(string.digits) for n in range(32)])
             self.population["genotype"].append( {
                 "DNA": DNA,
@@ -59,7 +59,7 @@ class Evolution:
     def express(self):
         """ express genotype (a list of digits) to phenotype (body and phaseoffset) """
         self.population["phenotype"] = []
-        for robot_id in range(self.population_size):
+        for robot_id in range(len(self.population["genotype"])):
             # random, not depend on genotype.
             body_random = np.random.random(self.body_dimension)
             body = np.zeros_like(body_random, dtype=int)
@@ -74,21 +74,30 @@ class Evolution:
     def next_generation(self, sorted_result):
         """ step to next generation based on the sorted result
         sorted_result is a dictionary with keys id and fitness sorted by fitness desc"""
-        # select the first half
-        selected_geno = []
-        half = int(np.ceil(len(sorted_result["id"])/2))
-        for i in sorted_result["id"][:half]:
-            selected_geno.append(self.population["genotype"][i])
+        num_genos = self.target_population_size
+        selected_geno_1 = []
+        selected_geno_2 = []
+        cursor = 0
+        while num_genos>0:
+            if cursor>=len(sorted_result["id"]):
+                cursor=0
+            geno = self.population["genotype"][sorted_result["id"][cursor]]
+            if len(selected_geno_1)>len(selected_geno_2):
+                selected_geno_2.append(geno)
+            else:
+                selected_geno_1.append(geno)
+            cursor += 1
+            num_genos -= 1
 
         # mutate first half to two mutant groups
-        mutated_geno_1 = self.mutate(selected_geno)
-        mutated_geno_2 = self.mutate(selected_geno)
+        mutated_geno_1 = self.mutate(selected_geno_1)
+        mutated_geno_2 = self.mutate(selected_geno_2)
 
         # combine two mutant groups into next generation
         next_generation = {}
         next_generation["genotype"] = mutated_geno_1 + mutated_geno_2
         self.population = next_generation
-        self.population_size = len(next_generation["genotype"])
+        assert self.target_population_size == len(next_generation["genotype"])
         self.express()
 
     def mutate(self, geno):
@@ -117,7 +126,7 @@ class Evolution:
         """ dump a dictionary, each of which is a string for one robot """
         ret = {}
         population = {}
-        for robot_id in range(self.population_size):
+        for robot_id in range(len(self.population["genotype"])):
             robot = {"phenotype":{}, "genotype":{}}
             robot["phenotype"]["body"] = self.population["phenotype"][robot_id]["body"]
             robot["phenotype"]["phaseoffset"] = self.population["phenotype"][robot_id]["phaseoffset"]
@@ -126,23 +135,23 @@ class Evolution:
             population[robot_id] = robot
         ret["population"] = population
         ret["body_dimension"] = self.body_dimension
-        ret["population_size"] = self.population_size
+        ret["target_population_size"] = self.target_population_size
         ret["phenotype_keys"] = self.phenotype_keys
         ret["genotype_keys"] = self.genotype_keys
-        ret["mutate_rate"] = self.mutate_rate
+        ret["mutation_rate"] = self.mutation_rate
         return ret
 
     def load_dic(self, evolution_dic):
         """ load a dictionary """
         self.body_dimension = evolution_dic["body_dimension"]
-        self.population_size = evolution_dic["population_size"]
+        self.target_population_size = evolution_dic["target_population_size"]
         self.phenotype_keys = evolution_dic["phenotype_keys"]
         self.genotype_keys = evolution_dic["genotype_keys"]
-        self.mutate_rate = evolution_dic["mutate_rate"]
+        self.mutation_rate = evolution_dic["mutation_rate"]
         population = evolution_dic["population"]
         # ...
         self.population = {"genotype": [], "phenotype": []}
         for i in population:
             self.population["genotype"].append(population[i]["genotype"])
-            self.population["phenotype"].append(population[i]["phenotype"])
+            # self.population["phenotype"].append(population[i]["phenotype"])
  

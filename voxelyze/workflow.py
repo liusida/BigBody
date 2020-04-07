@@ -64,6 +64,9 @@ def record_bestfit_history(experiment_name, generation, stepsize=100, stopsec=1)
     foldername = foldername_generation(experiment_name, generation)
     report_filename = f"{foldername}/report/output.xml"
     history_foldername = f"{foldername}/bestfit/"
+    for root, dirs, files in os.walk(history_foldername):
+        for f in files:
+            os.remove(os.path.join(root, f))
     report = etree.parse(report_filename)
     best_fit_filename = report.xpath("/report/bestfit/filename")[0].text
     #vxd

@@ -36,7 +36,6 @@ class CPPN:
         ret["output_node_names"] = self.output_node_names
         ret["hidden_node_names"] = self.hidden_node_names
         ret["hidden_layers"] = self.hidden_layers
-        ret["weight_mutation_std"] = self.weight_mutation_std
         weights = {}
         activation = {}
 
@@ -57,7 +56,6 @@ class CPPN:
         self.output_node_names = obj["output_node_names"]
         self.hidden_node_names = obj["hidden_node_names"]
         self.hidden_layers = obj["hidden_layers"]
-        self.weight_mutation_std = obj["weight_mutation_std"]
         self.init_graph()
         for name in obj["activation"]:
             fn = obj["activation"][name]

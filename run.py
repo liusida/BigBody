@@ -25,22 +25,27 @@ try:
     from exp_settings import *
 except:
     experiment_name = "v040708"
-    population_size = 128
+    target_population_size = 128
     body_dimension = (10, 10, 10)
-    weight_mutation_std = 0.1
+    mutation_rate = [10, 0.1]
     hidden_layers = [10,10,10]
 
 vx.clear_workspace()
-evolution = CPPNEvolution(body_dimension, population_size)
 
 # try to resume from last experiment
 evolution_dic, generation = vx.load_last_generation(experiment_name)
 # if failed, start from scratch
 if evolution_dic is None:
     generation = 0
-    evolution.init_geno(hidden_layers=hidden_layers, weight_mutation_std=weight_mutation_std)
+    evolution = CPPNEvolution(body_dimension, target_population_size, mutation_rate)
+    evolution.init_geno(hidden_layers=hidden_layers)
     evolution.express()
 else:
+    # resize using new body_dimension
+    evolution = CPPNEvolution()
+    evolution_dic["target_population_size"] = target_population_size
+    evolution_dic["body_dimension"] = body_dimension
+    evolution_dic["mutation_rate"] = mutation_rate
     evolution.load_dic(evolution_dic)
 
 # infinity evolutionary loop

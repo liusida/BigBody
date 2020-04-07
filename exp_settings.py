@@ -1,8 +1,13 @@
 # should be able to change during evolution:
-population_size = 4
-body_dimension = (5, 5, 5)
-weight_mutation_std = 0.2
+# effect at this generation:
+body_dimension = (3, 3, 3)
+# effect between this generation and the next:
+
+mutation_rate = [200, 0.001]    # this is stable
+# mutation_rate = [2, 0.5]    # this is aggressive
+# effect at next generation:
+target_population_size = 200
 
 # cannot change during evolution:
-experiment_name = "v040707"
+experiment_name = "v040710"
 hidden_layers = [10,10,10]
