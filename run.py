@@ -24,7 +24,7 @@ generation = 0
 try:
     from exp_settings import *
 except:
-    experiment_name = "v040704"
+    experiment_name = "v040708"
     population_size = 128
     body_dimension = (10, 10, 10)
     weight_mutation_std = 0.1
