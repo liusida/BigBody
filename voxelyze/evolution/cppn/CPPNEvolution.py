@@ -1,15 +1,17 @@
 import numpy as np
 from ...helper import largest_component
-from ..Mutation import Mutation
+from ..Evolution import Evolution
 from .CPPN import CPPN
 
-class CPPNMutation(Mutation):
+class CPPNEvolution(Evolution):
     def __init__(self, body_dimension, population_size):
-        super(CPPNMutation, self).__init__(body_dimension, population_size)
+        super(CPPNEvolution, self).__init__(body_dimension, population_size)
         self.genotype_keys.append("CPPN")
+        # mutate_rate: 0. weight to fn ratio, 1. weight change rate
+        self.mutate_rate = [5, 1]
 
     def init_geno(self, hidden_layers=[1]):
-        super(CPPNMutation, self).init_geno()
+        super(CPPNEvolution, self).init_geno()
         for g in self.population["genotype"]:
             g["CPPN"] = CPPN(hidden_layers=hidden_layers)
 
@@ -32,13 +34,13 @@ class CPPNMutation(Mutation):
     def mutate_single_value(self, key, value):
         if key=="CPPN":
             ret = value.clone()
-            ret.mutate(num_random_activation_functions=1, num_random_weight_changes=5)
+            ret.mutate(num_random_activation_functions=1, num_random_weight_changes=self.mutate_rate[0])
             return ret
         else:
             return value
 
-    def load_dic(self, mutation_dic):
-        super(CPPNMutation, self).load_dic(mutation_dic)
+    def load_dic(self, Evolution_dic):
+        super(CPPNEvolution, self).load_dic(Evolution_dic)
         for i in range(self.population_size):
             s = self.population["genotype"][i]["CPPN"]
             self.population["genotype"][i]["CPPN"] = CPPN()

@@ -164,7 +164,7 @@ class CPPN:
 
     def change_weight(self, mutation_std=0.5):
         edge = random.choice(list(self.graph.edges))
-        np.random.normal(loc=self.graph.edges[edge[0], edge[1]]["weight"], scale=mutation_std)
+        self.graph.edges[edge[0], edge[1]]["weight"] = np.random.normal(loc=self.graph.edges[edge[0], edge[1]]["weight"], scale=mutation_std)
         return True
 
     def get_output(self,body_dimension):

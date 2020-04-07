@@ -14,36 +14,42 @@
 # write the next generation of population with high fitnesses and mutants
 
 import voxelyze as vx
-from voxelyze.mutation.cppn.CPPNMutation import CPPNMutation
+from voxelyze.evolution.cppn.CPPNEvolution import CPPNEvolution
 import numpy as np
-import shutil
-import random
+import shutil, random
 random.seed(1)
 np.random.seed(1)
-experiment_name = "v040702"
-population_size = 4
 generation = 0
-body_dimension = (5, 5, 5)
+
+try:
+    import exp_settings
+    experiment_name = exp_settings.experiment_name
+    population_size = exp_settings.population_size
+    body_dimension = exp_settings.body_dimension
+except:
+    experiment_name = "v040704"
+    population_size = 128
+    body_dimension = (10, 10, 10)
 
 vx.clear_workspace()
-mutation = CPPNMutation(body_dimension, population_size)
+evolution = CPPNEvolution(body_dimension, population_size)
 
 # try to resume from last experiment
-mutation_dic, generation = vx.load_last_generation(experiment_name)
+evolution_dic, generation = vx.load_last_generation(experiment_name)
 # if failed, start from scratch
-if mutation_dic is None:
+if evolution_dic is None:
     generation = 0
-    mutation.init_geno(hidden_layers=[40,30,30])
-    mutation.express()
+    evolution.init_geno(hidden_layers=[10,10,10])
+    evolution.express()
 else:
-    mutation.load_dic(mutation_dic)
+    evolution.load_dic(evolution_dic)
 
 # infinity evolutionary loop
 while(True):
     # write vxa vxd
     foldername = vx.prepare_directories(experiment_name, generation)
     vx.copy_vxa(experiment_name, generation)
-    vx.write_all_vxd(experiment_name, generation, mutation.dump_dic())
+    vx.write_all_vxd(experiment_name, generation, evolution.dump_dic())
 
 
     # start simulator
@@ -62,7 +68,7 @@ while(True):
     for i in range(3):
         if i<len(sorted_result['id']):
             robot_id = sorted_result['id'][i]
-            msg += f"{mutation.population['genotype'][robot_id]['firstname']} {mutation.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
+            msg += f"{evolution.population['genotype'][robot_id]['firstname']} {evolution.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
     print(msg, flush=True)
 
     # if generation%3==0:
@@ -71,4 +77,4 @@ while(True):
 
     # next generation
     generation += 1
-    next_generation = mutation.next_generation(sorted_result)
+    next_generation = evolution.next_generation(sorted_result)

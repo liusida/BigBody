@@ -1,6 +1,6 @@
 # not finish yet.
 #
-class DirectMutation(Mutation):
+class DirectEvolution(Evolution):
     def __init__(self):
         super().__init__()
 

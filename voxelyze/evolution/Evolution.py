@@ -1,4 +1,4 @@
-# This is the base class for any mutation method
+# This is the base class for any evolution class
 
 from .. import names as names
 from ..helper import largest_component
@@ -9,8 +9,8 @@ import string, random, json
 Usage:
 
 ```
-from voxelyze.mutation.Mutation import Mutation
-m = Mutation(body_dimension=3,population_size=10)
+from voxelyze.evolution.Evolution import Evolution
+m = Evolution(body_dimension=3,population_size=10)
 m.init_geno()
 m.express()
 # run simulation
@@ -27,7 +27,7 @@ Public interface:
 
 """
 
-class Mutation:
+class Evolution:
     def __init__(self, body_dimension, population_size):
         """ init
         body_dimension = [6,6,5] for 6x6x5 robot
@@ -39,9 +39,11 @@ class Mutation:
         self.init_geno()
         self.express()
         self.phenotype_keys = ["body", "phaseoffset"]
-        self.genotype_keys = ["firstname", "lastname", "DNA"]
         # DNA is a 32 bytes string of digits;
         # firstname and lastname are strings;
+        self.genotype_keys = ["firstname", "lastname", "DNA"]
+        # mutate_rate is a list of hyper-parameters for adjusting the mutate strength
+        self.mutate_rate = []
 
     def init_geno(self):
         """ random init, start from scratch """
@@ -127,15 +129,17 @@ class Mutation:
         ret["population_size"] = self.population_size
         ret["phenotype_keys"] = self.phenotype_keys
         ret["genotype_keys"] = self.genotype_keys
+        ret["mutate_rate"] = self.mutate_rate
         return ret
 
-    def load_dic(self, mutation_dic):
+    def load_dic(self, evolution_dic):
         """ load a dictionary """
-        self.body_dimension = mutation_dic["body_dimension"]
-        self.population_size = mutation_dic["population_size"]
-        self.phenotype_keys = mutation_dic["phenotype_keys"]
-        self.genotype_keys = mutation_dic["genotype_keys"]
-        population = mutation_dic["population"]
+        self.body_dimension = evolution_dic["body_dimension"]
+        self.population_size = evolution_dic["population_size"]
+        self.phenotype_keys = evolution_dic["phenotype_keys"]
+        self.genotype_keys = evolution_dic["genotype_keys"]
+        self.mutate_rate = evolution_dic["mutate_rate"]
+        population = evolution_dic["population"]
         # ...
         self.population = {"genotype": [], "phenotype": []}
         for i in population:
