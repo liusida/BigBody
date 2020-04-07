@@ -66,10 +66,12 @@ while(True):
     # read reporter
     sorted_result = vx.read_report(experiment_name, generation)
 
+    # vx.write_box_plot(experiment_name, generation, sorted_result)
 
     # report the fitness
-    msg = f"Experiment {experiment_name}, simulation for generation {generation} finished.\nThe top 3 bestfit fitness score of this generation are \n"
-    for i in range(3):
+    top_n = len(sorted_result['id'])
+    msg = f"Experiment {experiment_name}, simulation for generation {generation} finished.\nThe top {top_n} bestfit fitness score of this generation are \n"
+    for i in range(top_n):
         if i<len(sorted_result['id']):
             robot_id = sorted_result['id'][i]
             msg += f"{evolution.population['genotype'][robot_id]['firstname']} {evolution.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"

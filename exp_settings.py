@@ -26,5 +26,5 @@ def target_population_size(generation=0):
     return ret
 
 # =================== cannot change during evolution: =======================
-experiment_name = "v040711"
+experiment_name = "v040718"
 hidden_layers = [10,10,10]

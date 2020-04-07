@@ -191,6 +191,14 @@ def write_all_vxd(experiment_name, generation, mutation_dic):
     with open(mutation_filename, 'w', encoding="UTF-8") as f:
         json.dump(mutation_dic, f)
 
+def write_box_plot(experiment_name, generation, sorted_result):
+    import matplotlib.pyplot as plt
+    png_filename = f"{foldername_generation(experiment_name, generation)}/report/generation_{generation}.png"
+
+    plt.boxplot(sorted_result["fitness"])
+    plt.savefig(png_filename)
+    plt.close()
+
 if __name__ == "__main__":
     def test_write_vxd():
         import shutil

@@ -44,6 +44,7 @@ class Evolution:
         # DNA is a 32 bytes string of digits;
         # firstname and lastname are strings;
         self.genotype_keys = ["firstname", "lastname", "DNA"]
+        self.best_so_far = {"geno":None, "fitness":-9999}
 
     def init_geno(self):
         """ random init, start from scratch """
@@ -74,28 +75,38 @@ class Evolution:
     def next_generation(self, sorted_result):
         """ step to next generation based on the sorted result
         sorted_result is a dictionary with keys id and fitness sorted by fitness desc"""
-        num_genos = self.target_population_size
-        selected_geno_1 = []
-        selected_geno_2 = []
+        if self.best_so_far["geno"] is not None:
+            geno_from_best_so_far = [self.best_so_far["geno"]]
+            num_genos = self.target_population_size -1
+        else:
+            geno_from_best_so_far = []
+            num_genos = self.target_population_size
+        num_groups = 3
+        selected_geno = []
+        for i in range(num_groups):
+            selected_geno.append([])
         cursor = 0
-        while num_genos>0:
+        for i in range(num_genos):
             if cursor>=len(sorted_result["id"]):
                 cursor=0
             geno = self.population["genotype"][sorted_result["id"][cursor]]
-            if len(selected_geno_1)>len(selected_geno_2):
-                selected_geno_2.append(geno)
-            else:
-                selected_geno_1.append(geno)
-            cursor += 1
-            num_genos -= 1
+            selected_geno[i % num_groups].append(geno)
+            if (i-1)%num_groups==0:
+                cursor += 1
 
         # mutate first half to two mutant groups
-        mutated_geno_1 = self.mutate(selected_geno_1)
-        mutated_geno_2 = self.mutate(selected_geno_2)
+        mutated_geno = self.mutate(geno_from_best_so_far)
+        for geno in selected_geno:
+            mutated_geno += self.mutate(geno)
+
+        # save best geno so far for breeding
+        if sorted_result["fitness"][0] >= self.best_so_far["fitness"]:
+            self.best_so_far["fitness"] = sorted_result["fitness"][0]
+            self.best_so_far["geno"] = self.population["genotype"][sorted_result["id"][0]]
 
         # combine two mutant groups into next generation
         next_generation = {}
-        next_generation["genotype"] = mutated_geno_1 + mutated_geno_2
+        next_generation["genotype"] = mutated_geno
         self.population = next_generation
         assert self.target_population_size == len(next_generation["genotype"])
         self.express()
