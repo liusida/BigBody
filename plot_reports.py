@@ -5,7 +5,7 @@ import voxelyze as vx
 import matplotlib.pyplot as plt
 import matplotlib.ticker as plticker
 
-experiment_name = "v040711"
+# experiment_name = "v040711"
 
 x = []
 body = []
@@ -27,7 +27,7 @@ for generation in range(10000):
         fitness = float(robot.xpath("fitness_score")[0].text)
         fitnesses.append(fitness)
     body.append(body_dimension(generation)[0])
-    mut.append(mutation_rate(generation)[0])
+    mut.append(mutation_rate(generation)[1])
     pop.append(target_population_size(generation))
     x.append(fitnesses)
 
@@ -44,7 +44,7 @@ large_b = body[-1]
 body = np.array(body)
 body = body * large_f / large_b
 
-large_m = mut[-1]
+large_m = mut[0]
 mut = np.array(mut)
 mut = mut * large_f / large_m
 
