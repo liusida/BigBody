@@ -25,5 +25,6 @@ for generation in range(10000):
     x.append(fitnesses)
 
 plt.boxplot(x)
+plt.locator_params(axis='x', nbins=10)
 plt.savefig("boxplot.png")
 plt.close()

@@ -13,6 +13,7 @@ Voxelyze3
 vx3_node_worker
 *.history
 test_*
+boxplot.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
