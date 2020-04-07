@@ -6,11 +6,12 @@ from .CPPN import CPPN
 class CPPNMutation(Mutation):
     def __init__(self, body_dimension, population_size):
         super(CPPNMutation, self).__init__(body_dimension, population_size)
-        self.genotype_keys = ["CPPN"]
-    def init_geno(self):
+        self.genotype_keys.append("CPPN")
+
+    def init_geno(self, hidden_layers=[1]):
         super(CPPNMutation, self).init_geno()
         for g in self.population["genotype"]:
-            g["CPPN"] = CPPN()
+            g["CPPN"] = CPPN(hidden_layers=hidden_layers)
 
     def express(self):
         self.population["phenotype"] = []
@@ -31,7 +32,14 @@ class CPPNMutation(Mutation):
     def mutate_single_value(self, key, value):
         if key=="CPPN":
             ret = value.clone()
-            ret.mutate()
+            ret.mutate(num_random_activation_functions=1, num_random_weight_changes=5)
             return ret
         else:
             return value
+
+    def load_dic(self, mutation_dic):
+        super(CPPNMutation, self).load_dic(mutation_dic)
+        for i in range(self.population_size):
+            s = self.population["genotype"][i]["CPPN"]
+            self.population["genotype"][i]["CPPN"] = CPPN()
+            self.population["genotype"][i]["CPPN"].loads(s)

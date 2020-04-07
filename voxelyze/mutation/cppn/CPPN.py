@@ -1,20 +1,22 @@
-import copy, math, random
+import copy, math, random, json
 import numpy as np
 import networkx as nx
 from .CPPNActivationFunctions import *
 
+activation_functions = [np.sin, np.abs, neg_abs, np.square, neg_square, sqrt_abs, neg_sqrt_abs]
+activation_name_to_fn = {}
+for fn in activation_functions:
+    activation_name_to_fn[fn.__name__] = fn
+
 class CPPN:
     input_node_names = ['x', 'y', 'z', 'd', 'b']
     output_node_names = ['body', 'phaseoffset']
-    hidden_node_names = []
-    activation_functions = [np.sin, np.abs, neg_abs, np.square, neg_square, sqrt_abs, neg_sqrt_abs]
-    def __init__(self, hidden_layers=[10,10,10]):
+    def __init__(self, hidden_layers=[1]):
         # There are many differences between networkx 1.x and 2.x, we'll use 2.x
         assert float(nx.__version__)>2.0
+        self.hidden_node_names = []
         self.hidden_layers = hidden_layers
         self.init_graph()
-        self.last_node_index = 0
-        self.random = random.random()
 
     def clone(self):
         ret = copy.copy(self)
@@ -22,7 +24,43 @@ class CPPN:
         return ret
 
     def __str__(self):
-        return "Not implemented."
+        return self.dumps()
+    
+    def dumps(self):
+        """ Serierize CPPN class. Save all the graph into vxd file, so that we can load from a vxd later. """
+        ret = {}
+        ret["input_node_names"] = self.input_node_names
+        ret["output_node_names"] = self.output_node_names
+        ret["hidden_node_names"] = self.hidden_node_names
+        ret["hidden_layers"] = self.hidden_layers
+        weights = {}
+        activation = {}
+
+        for node1,node2 in self.graph.edges:
+            weights[f"{node1}__{node2}"] = self.graph.edges[node1, node2]["weight"]
+        
+        for name in self.hidden_node_names:
+            activation[name] = self.graph.nodes[name]["function"].__name__
+
+        ret["weights"] = weights
+        ret["activation"] = activation
+        return json.dumps(ret)
+
+    def loads(self, s):
+        """ Load class from a string, which is probably stored in a vxd. """
+        obj = json.loads(s)
+        self.input_node_names = obj["input_node_names"]
+        self.output_node_names = obj["output_node_names"]
+        self.hidden_node_names = obj["hidden_node_names"]
+        self.hidden_layers = obj["hidden_layers"]
+        self.init_graph()
+        for name in obj["activation"]:
+            fn = obj["activation"][name]
+            self.graph.add_node(name, function=activation_name_to_fn[fn])
+        for str_names in obj["weights"]:
+            weight = obj["weights"][str_names]
+            node1, node2 = str_names.split("__")
+            self.graph.add_edge(node1, node2, weight=weight)
 
     def init_graph(self):
         """Create a simple graph with each input attached to each output"""
@@ -38,7 +76,7 @@ class CPPN:
             nodes_this_layer = []
             for node in range(layer):
                 name = f"hidden_{layer_id}_{node}"
-                self.graph.add_node(name, type="hidden", function=random.choice(self.activation_functions))
+                self.graph.add_node(name, type="hidden", function=random.choice(activation_functions))
                 for last in nodes_last_layer:
                     self.graph.add_edge(last, name, weight=random.random())
                 nodes_this_layer.append(name)
@@ -88,11 +126,11 @@ class CPPN:
         plt.show()
 
     def mutate(self, num_random_activation_functions=1, num_random_weight_changes=5):
-        for _ in range(num_random_activation_functions):
-            self.change_activation()
-        for _ in range(num_random_weight_changes):
-            self.change_weight()
-        return
+        # for _ in range(num_random_activation_functions):
+        #     self.change_activation()
+        # for _ in range(num_random_weight_changes):
+        #     self.change_weight()
+        # return
         total = num_random_activation_functions + num_random_weight_changes
         # choose a mutation according to probability
         while True:
@@ -117,7 +155,7 @@ class CPPN:
         # print(self.graph.nodes)
         success = False
         for i in range(10):
-            activation = random.choice(self.activation_functions)
+            activation = random.choice(activation_functions)
             if self.graph.nodes[node]["function"] != activation:
                 self.graph.nodes[node]["function"]=activation
                 success = True

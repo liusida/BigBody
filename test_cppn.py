@@ -6,24 +6,8 @@
 
 from voxelyze.mutation.cppn.CPPNMutation import CPPNMutation
 
-m = CPPNMutation(body_dimension=[6,6,6],population_size=2)
-m.init_geno()
+m = CPPNMutation(body_dimension=[1,1,1],population_size=2)
+m.init_geno(hidden_layers=[1])
 m.express()
-print(m.population)
-# run simulation
-# read report
-sorted_result = {"id":[0], "fitness":[10]}
-m.next_generation(sorted_result)
-print(m.population)
-
-m.next_generation(sorted_result)
-m.next_generation(sorted_result)
-m.next_generation(sorted_result)
-m.next_generation(sorted_result)
-m.next_generation(sorted_result)
-m.next_generation(sorted_result)
-m.next_generation(sorted_result)
-
-# print("")
-# m.population["genotype"][0]["CPPN"].draw()
-
+dic = m.dump_dic()
+print(dic)

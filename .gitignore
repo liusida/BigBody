@@ -11,7 +11,8 @@ tmp_*
 VoxCAD
 Voxelyze3
 vx3_node_worker
-
+*.history
+test_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

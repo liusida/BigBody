@@ -3,8 +3,7 @@
 from .. import names as names
 from ..helper import largest_component
 import numpy as np
-import string
-import random
+import string, random, json
 
 """
 Usage:
@@ -40,7 +39,7 @@ class Mutation:
         self.init_geno()
         self.express()
         self.phenotype_keys = ["body", "phaseoffset"]
-        self.genotype_keys = ["DNA"]
+        self.genotype_keys = ["firstname", "lastname", "DNA"]
         # DNA is a 32 bytes string of digits;
         # firstname and lastname are strings;
 
@@ -95,19 +94,51 @@ class Mutation:
         mutants = []
         for i in range(len(geno)):
             mutant = {}
-            mutant["firstname"] = names.get_first_name()
-            mutant["lastname"] = geno[i]["firstname"]
             for key in self.genotype_keys:
                 mutant[key] = self.mutate_single_value(key, geno[i][key])
+            mutant["firstname"] = names.get_first_name()
+            mutant["lastname"] = geno[i]["firstname"]
             mutants.append(mutant)
         return mutants
 
     def mutate_single_value(self, key, value):
         if key=="DNA":
-            pos = random.randint(0, len(string)-1)
-            string = list(string)
-            string[pos] = str((int(string[pos]) + 1) % 10)
-            string = "".join(string)
-            return string
+            pos = random.randint(0, len(value)-1)
+            value = list(value)
+            value[pos] = str((int(value[pos]) + 1) % 10)
+            value = "".join(value)
+            return value
         else:
             return value
+
+    def dump_dic(self):
+        """ dump a dictionary, each of which is a string for one robot """
+        ret = {}
+        population = {}
+        for robot_id in range(self.population_size):
+            robot = {"phenotype":{}, "genotype":{}}
+            robot["phenotype"]["body"] = self.population["phenotype"][robot_id]["body"]
+            robot["phenotype"]["phaseoffset"] = self.population["phenotype"][robot_id]["phaseoffset"]
+            for key in self.genotype_keys:
+                robot["genotype"][key] = str(self.population["genotype"][robot_id][key])
+            population[robot_id] = robot
+        ret["population"] = population
+        ret["body_dimension"] = self.body_dimension
+        ret["population_size"] = self.population_size
+        ret["phenotype_keys"] = self.phenotype_keys
+        ret["genotype_keys"] = self.genotype_keys
+        return ret
+
+    def load_dic(self, mutation_dic):
+        """ load a dictionary """
+        self.body_dimension = mutation_dic["body_dimension"]
+        self.population_size = mutation_dic["population_size"]
+        self.phenotype_keys = mutation_dic["phenotype_keys"]
+        self.genotype_keys = mutation_dic["genotype_keys"]
+        population = mutation_dic["population"]
+        # ...
+        self.population = {"genotype": [], "phenotype": []}
+        for i in population:
+            self.population["genotype"].append(population[i]["genotype"])
+            self.population["phenotype"].append(population[i]["phenotype"])
+ 

@@ -2,6 +2,8 @@
 # So the structure is managed here only
 #
 from .helper import *
+import os, re, json
+import numpy as np
 import lxml.etree as etree
 child = etree.SubElement
 
@@ -30,45 +32,6 @@ def copy_vxa(experiment_name, generation):
     import shutil
     foldername = foldername_generation(experiment_name, generation)
     shutil.copy("assets/base.vxa", f"{foldername}/start_population/base.vxa")
-
-def write_all_vxd(experiment_name, generation, population):
-    vx_fields = {"body": "Body", "phaseoffset": "PhaseOffset"}
-    for robot_id in range(len(population["phenotype"])):
-        vxd_filename = f"data/experiment_{experiment_name}/generation_{generation:04}/start_population/robot_{robot_id:04}.vxd"
-        xRoot = etree.Element("VXD")
-        # Main Structure and PhaseOffset
-        body = population["phenotype"][robot_id]["body"]
-        phaseoffset = population["phenotype"][robot_id]["phaseoffset"]
-        Z,Y,X = body.shape
-        xStructure = child(xRoot, "Structure")
-        xStructure.set('replace', 'VXA.VXC.Structure')
-        xStructure.set('Compression', 'ASCII_READABLE')
-        child(xStructure, "X_Voxels").text = str(X)
-        child(xStructure, "Y_Voxels").text = str(Y)
-        child(xStructure, "Z_Voxels").text = str(Z)
-        body_flatten = body.reshape([Z,-1])
-        xData = child(xStructure, "Data")
-        for i in range(body_flatten.shape[0]):
-            layer = child(xData, "Layer")
-            str_layer = "".join([str(c) for c in body_flatten[i]])
-            layer.text = etree.CDATA(str_layer)
-        if phaseoffset is not None:
-            phaseoffset_flatten = phaseoffset.reshape([Z,-1])
-            xPhaseOffset = child(xStructure, "PhaseOffset")
-            for i in range(phaseoffset_flatten.shape[0]):
-                layer = child(xPhaseOffset, "Layer")
-                str_layer = ",".join([f"{c:.03f}" for c in phaseoffset_flatten[i]])
-                layer.text = etree.CDATA(str_layer)
-        # Save other fields as well
-        xOtherFields = child(xRoot, "Genotype")
-        for key in population["genotype"][robot_id]:
-            if type(population["genotype"][robot_id][key]) is str:
-                child(xOtherFields, key).text = population["genotype"][robot_id][key]
-            else:
-                child(xOtherFields, key).text = population["genotype"][robot_id][key].__str__()
-        # Save to file
-        with open(vxd_filename, 'wb') as file:
-            file.write(etree.tostring(xRoot))
 
 def read_report(experiment_name, generation):
     import re
@@ -118,9 +81,7 @@ def start_simulator(experiment_name, generation):
     run_shell_command(commandline)
 
 def load_last_generation(experiment_name):
-    import os, re
-    import numpy as np
-    max_generation_number = 0
+    max_generation_number = -1
     max_genration_foldername = ""
     if os.path.exists(f"data/experiment_{experiment_name}/"):
         folders = os.listdir(f"data/experiment_{experiment_name}/")
@@ -131,16 +92,20 @@ def load_last_generation(experiment_name):
                 if g>max_generation_number:
                     max_generation_number = g
                     max_genration_foldername = folder
-    if max_generation_number==0:
+    if max_generation_number==-1:
         # previous generation not found
-        return None,0
-    population = {"genotype":[], "phenotype":[]}
+        return None
+
+    mutation_filename = f"data/experiment_{experiment_name}/generation_{max_generation_number:04}/mutation.json"
+    with open(mutation_filename, 'r', encoding="UTF-8") as f:
+        mutation_dic = json.load(f)
     other_fields_initiated = False
     max_genration_foldername = f"data/experiment_{experiment_name}/{max_genration_foldername}/start_population/"
+    population_dic = {}
     for filename in os.listdir(max_genration_foldername):
         if filename[-4:]==".vxd":
-            robot_genotype = {}
-            robot_phenotype = {}
+            robot_id = int(re.findall(r'\d+', filename)[0])
+            robot = {"phenotype":{}, "genotype":{}}
             xRoot = etree.parse(f"{max_genration_foldername}/{filename}")
             # Load body and phaseoffset
             x = int(xRoot.xpath("/VXD/Structure/X_Voxels")[0].text)
@@ -155,7 +120,7 @@ def load_last_generation(experiment_name):
                     line.append(int(ch))
                 lines.append(line)
             lines = np.array(lines)
-            robot_phenotype["body"] = lines.reshape([z,y,x])
+            robot["phenotype"]["body"] = lines.reshape([z,y,x])
             #PhaseOffset
             Layers = xRoot.xpath("/VXD/Structure/PhaseOffset/Layer")
             lines = []
@@ -165,7 +130,7 @@ def load_last_generation(experiment_name):
                     line.append(float(ch))
                 lines.append(line)
             lines = np.array(lines)
-            robot_phenotype["phaseoffset"] = lines.reshape([z,y,x])
+            robot["phenotype"]["phaseoffset"] = lines.reshape([z,y,x])
             #Load other fields
             # if not other_fields_initiated:
             #     other_fields_initiated = True
@@ -174,11 +139,54 @@ def load_last_generation(experiment_name):
             #         robot[key.tag] = []
             other_fields = xRoot.xpath("/VXD/Genotype")[0]
             for key in other_fields.getchildren():
-                robot_genotype[key.tag] = key.text
-            population["genotype"].append(robot_genotype)
-            population["phenotype"].append(robot_phenotype)
+                robot["genotype"][key.tag] = key.text
 
-    return population, max_generation_number
+            population_dic[robot_id] = robot
+
+    mutation_dic["population"] = population_dic
+    return mutation_dic
+
+def write_all_vxd(experiment_name, generation, mutation_dic):
+    population_dic = mutation_dic["population"]
+    for robot_id in range(len(population_dic)):
+        robot = population_dic[robot_id]
+        vxd_filename = f"data/experiment_{experiment_name}/generation_{generation:04}/start_population/robot_{robot_id:04}.vxd"
+        xRoot = etree.Element("VXD")
+        # Main Structure and PhaseOffset
+        body = robot["phenotype"]["body"]
+        phaseoffset = robot["phenotype"]["phaseoffset"]
+        Z,Y,X = body.shape
+        xStructure = child(xRoot, "Structure")
+        xStructure.set('replace', 'VXA.VXC.Structure')
+        xStructure.set('Compression', 'ASCII_READABLE')
+        child(xStructure, "X_Voxels").text = str(X)
+        child(xStructure, "Y_Voxels").text = str(Y)
+        child(xStructure, "Z_Voxels").text = str(Z)
+        body_flatten = body.reshape([Z,-1])
+        xData = child(xStructure, "Data")
+        for i in range(body_flatten.shape[0]):
+            layer = child(xData, "Layer")
+            str_layer = "".join([str(c) for c in body_flatten[i]])
+            layer.text = etree.CDATA(str_layer)
+        if phaseoffset is not None:
+            phaseoffset_flatten = phaseoffset.reshape([Z,-1])
+            xPhaseOffset = child(xStructure, "PhaseOffset")
+            for i in range(phaseoffset_flatten.shape[0]):
+                layer = child(xPhaseOffset, "Layer")
+                str_layer = ",".join([f"{c:.03f}" for c in phaseoffset_flatten[i]])
+                layer.text = etree.CDATA(str_layer)
+        # Save other fields as well
+        xOtherFields = child(xRoot, "Genotype")
+        for key in robot["genotype"]:
+            child(xOtherFields, key).text = robot["genotype"][key]
+        # Save to file
+        with open(vxd_filename, 'wb') as file:
+            file.write(etree.tostring(xRoot))
+    
+    mutation_filename = f"data/experiment_{experiment_name}/generation_{generation:04}/mutation.json"
+    mutation_dic["population"] = None
+    with open(mutation_filename, 'w', encoding="UTF-8") as f:
+        json.dump(mutation_dic, f)
 
 if __name__ == "__main__":
     def test_write_vxd():

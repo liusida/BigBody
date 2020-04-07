@@ -20,30 +20,30 @@ import shutil
 import random
 random.seed(1)
 np.random.seed(1)
-experiment_name = "v040613"
+experiment_name = "v040619"
 population_size = 128
 generation = 0
-body_dimension = (10, 10, 10)
+body_dimension = (5, 5, 5)
 
 vx.clear_workspace()
 mutation = CPPNMutation(body_dimension, population_size)
 
 # try to resume from last experiment
-population, generation = vx.load_last_generation(experiment_name)
+mutation_dic = vx.load_last_generation(experiment_name)
 # if failed, start from scratch
-if population is None:
+if mutation_dic is None:
     generation = 0
-    mutation.init_geno()
+    mutation.init_geno(hidden_layers=[5,5])
     mutation.express()
 else:
-    mutation.population = population
-    mutation.population_size = len(population["phenotype"])
+    mutation.load_dic(mutation_dic)
+
 # infinity evolutionary loop
 while(True):
     # write vxa vxd
     foldername = vx.prepare_directories(experiment_name, generation)
     vx.copy_vxa(experiment_name, generation)
-    vx.write_all_vxd(experiment_name, generation, mutation.population)
+    vx.write_all_vxd(experiment_name, generation, mutation.dump_dic())
 
 
     # start simulator
