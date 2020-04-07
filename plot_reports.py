@@ -25,4 +25,5 @@ for generation in range(10000):
     x.append(fitnesses)
 
 plt.boxplot(x)
-plt.show()
+plt.savefig("boxplot.png")
+plt.close()
