@@ -94,7 +94,7 @@ def load_last_generation(experiment_name):
                     max_genration_foldername = folder
     if max_generation_number==-1:
         # previous generation not found
-        return None
+        return None, 0
 
     mutation_filename = f"data/experiment_{experiment_name}/generation_{max_generation_number:04}/mutation.json"
     with open(mutation_filename, 'r', encoding="UTF-8") as f:
@@ -144,7 +144,7 @@ def load_last_generation(experiment_name):
             population_dic[robot_id] = robot
 
     mutation_dic["population"] = population_dic
-    return mutation_dic
+    return mutation_dic, max_generation_number
 
 def write_all_vxd(experiment_name, generation, mutation_dic):
     population_dic = mutation_dic["population"]

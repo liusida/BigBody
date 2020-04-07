@@ -20,16 +20,16 @@ import shutil
 import random
 random.seed(1)
 np.random.seed(1)
-experiment_name = "v040622"
-population_size = 128
+experiment_name = "v040702"
+population_size = 4
 generation = 0
-body_dimension = (10, 10, 10)
+body_dimension = (5, 5, 5)
 
 vx.clear_workspace()
 mutation = CPPNMutation(body_dimension, population_size)
 
 # try to resume from last experiment
-mutation_dic = vx.load_last_generation(experiment_name)
+mutation_dic, generation = vx.load_last_generation(experiment_name)
 # if failed, start from scratch
 if mutation_dic is None:
     generation = 0
@@ -58,16 +58,16 @@ while(True):
 
 
     # report the fitness
-    msg = f"Simulation for generation {generation} finished.\nThe top 3 bestfit fitness score of this generation are \n"
+    msg = f"Experiment {experiment_name}, simulation for generation {generation} finished.\nThe top 3 bestfit fitness score of this generation are \n"
     for i in range(3):
         if i<len(sorted_result['id']):
             robot_id = sorted_result['id'][i]
             msg += f"{mutation.population['genotype'][robot_id]['firstname']} {mutation.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
     print(msg, flush=True)
 
-    if generation%3==0:
-        import sida.slackbot.bot as bot
-        bot.send(msg, 1, "GUB0XS56E")
+    # if generation%3==0:
+    #     import sida.slackbot.bot as bot
+    #     bot.send(msg, 1, "GUB0XS56E")
 
     # next generation
     generation += 1
