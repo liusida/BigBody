@@ -1,3 +1,0 @@
-[submodule "voxelyze/mutation/cppn/PyTorch-NEAT"]
-	path = voxelyze/mutation/cppn/PyTorch-NEAT
-	url = https://github.com/uber-research/PyTorch-NEAT.git
