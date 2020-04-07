@@ -17,8 +17,6 @@ import voxelyze as vx
 from voxelyze.evolution.cppn.CPPNEvolution import CPPNEvolution
 import numpy as np
 import shutil, random
-random.seed(1)
-np.random.seed(1)
 generation = 0
 
 try:

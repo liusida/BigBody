@@ -1,3 +1,9 @@
+import random
+import numpy as np
+
+random.seed(2)
+np.random.seed(2)
+
 # ============== should be able to change during evolution: ================
 #  Plan: evolve a 100x100x100 body
 #  target generation = 500
@@ -26,5 +32,5 @@ def target_population_size(generation=0):
     return ret
 
 # =================== cannot change during evolution: =======================
-experiment_name = "v040718"
+experiment_name = "v040719"
 hidden_layers = [10,10,10]
