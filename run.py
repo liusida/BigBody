@@ -16,7 +16,7 @@
 import voxelyze as vx
 from voxelyze.evolution.cppn.CPPNEvolution import CPPNEvolution
 import numpy as np
-import shutil, random
+import shutil, random, os
 generation = 0
 
 try:
@@ -84,7 +84,8 @@ while(True):
     evolution.body_dimension = body_dimension(generation)
     evolution.mutation_rate = mutation_rate(generation)
 
-
+    # write report png
+    # os.system("python plot_reports.py > /dev/null")
     # next generation
     generation += 1
     next_generation = evolution.next_generation(sorted_result)

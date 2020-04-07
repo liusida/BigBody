@@ -33,7 +33,7 @@ for generation in range(10000):
 
 large_f = max(x[-1])
 ticks = []
-stepsize = int(len(x)/10)
+stepsize = int(len(x)/10)+1
 for i in range(len(x)):
     if i%stepsize==0:
         ticks.append(i)
