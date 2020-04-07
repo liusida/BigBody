@@ -20,10 +20,10 @@ import shutil
 import random
 random.seed(1)
 np.random.seed(1)
-experiment_name = "v040620"
+experiment_name = "v040621"
 population_size = 128
 generation = 0
-body_dimension = (10, 10, 10)
+body_dimension = (20, 20, 20)
 
 vx.clear_workspace()
 mutation = CPPNMutation(body_dimension, population_size)
