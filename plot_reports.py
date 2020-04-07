@@ -3,8 +3,9 @@ import lxml.etree as etree
 import re, os
 import voxelyze as vx
 import matplotlib.pyplot as plt
+import matplotlib.ticker as plticker
 
-experiment_name = "v040718"
+# experiment_name = "v040711"
 
 x = []
 for generation in range(10000):
@@ -24,7 +25,13 @@ for generation in range(10000):
         fitnesses.append(fitness)
     x.append(fitnesses)
 
+ticks = []
+stepsize = int(len(x)/10)
+for i in range(len(x)):
+    if i%stepsize==0:
+        ticks.append(i)
 plt.boxplot(x)
-plt.locator_params(axis='x', nbins=10)
+plt.xticks(ticks, ticks)
+
 plt.savefig("boxplot.png")
 plt.close()
