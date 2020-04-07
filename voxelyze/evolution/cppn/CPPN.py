@@ -11,11 +11,14 @@ for fn in activation_functions:
 class CPPN:
     input_node_names = ['x', 'y', 'z', 'd', 'b']
     output_node_names = ['body', 'phaseoffset']
-    def __init__(self, hidden_layers=[1]):
+    def __init__(self):
         # There are many differences between networkx 1.x and 2.x, we'll use 2.x
         assert float(nx.__version__)>2.0
         self.hidden_node_names = []
+
+    def init(self, hidden_layers, weight_mutation_std):
         self.hidden_layers = hidden_layers
+        self.weight_mutation_std = weight_mutation_std
         self.init_graph()
 
     def clone(self):
@@ -33,6 +36,7 @@ class CPPN:
         ret["output_node_names"] = self.output_node_names
         ret["hidden_node_names"] = self.hidden_node_names
         ret["hidden_layers"] = self.hidden_layers
+        ret["weight_mutation_std"] = self.weight_mutation_std
         weights = {}
         activation = {}
 
@@ -53,6 +57,7 @@ class CPPN:
         self.output_node_names = obj["output_node_names"]
         self.hidden_node_names = obj["hidden_node_names"]
         self.hidden_layers = obj["hidden_layers"]
+        self.weight_mutation_std = obj["weight_mutation_std"]
         self.init_graph()
         for name in obj["activation"]:
             fn = obj["activation"][name]
@@ -162,9 +167,11 @@ class CPPN:
                 break
         return success
 
-    def change_weight(self, mutation_std=0.5):
+    def change_weight(self):
         edge = random.choice(list(self.graph.edges))
-        self.graph.edges[edge[0], edge[1]]["weight"] = np.random.normal(loc=self.graph.edges[edge[0], edge[1]]["weight"], scale=mutation_std)
+        # print(f"mutate Edge:{edge[0]}-{edge[1]} From {self.graph.edges[edge[0], edge[1]]['weight']} To ", end="")
+        self.graph.edges[edge[0], edge[1]]["weight"] = np.random.normal(loc=self.graph.edges[edge[0], edge[1]]["weight"], scale=self.weight_mutation_std)
+        # print(f"{self.graph.edges[edge[0], edge[1]]['weight']}")
         return True
 
     def get_output(self,body_dimension):

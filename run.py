@@ -22,14 +22,13 @@ np.random.seed(1)
 generation = 0
 
 try:
-    import exp_settings
-    experiment_name = exp_settings.experiment_name
-    population_size = exp_settings.population_size
-    body_dimension = exp_settings.body_dimension
+    from exp_settings import *
 except:
     experiment_name = "v040704"
     population_size = 128
     body_dimension = (10, 10, 10)
+    weight_mutation_std = 0.1
+    hidden_layers = [10,10,10]
 
 vx.clear_workspace()
 evolution = CPPNEvolution(body_dimension, population_size)
@@ -39,7 +38,7 @@ evolution_dic, generation = vx.load_last_generation(experiment_name)
 # if failed, start from scratch
 if evolution_dic is None:
     generation = 0
-    evolution.init_geno(hidden_layers=[10,10,10])
+    evolution.init_geno(hidden_layers=hidden_layers, weight_mutation_std=weight_mutation_std)
     evolution.express()
 else:
     evolution.load_dic(evolution_dic)

@@ -10,10 +10,11 @@ class CPPNEvolution(Evolution):
         # mutate_rate: 0. weight to fn ratio, 1. weight change rate
         self.mutate_rate = [5, 1]
 
-    def init_geno(self, hidden_layers=[1]):
+    def init_geno(self, hidden_layers=[1], weight_mutation_std=0.1):
         super(CPPNEvolution, self).init_geno()
         for g in self.population["genotype"]:
-            g["CPPN"] = CPPN(hidden_layers=hidden_layers)
+            g["CPPN"] = CPPN()
+            g["CPPN"].init(hidden_layers=hidden_layers, weight_mutation_std=weight_mutation_std)
 
     def express(self):
         self.population["phenotype"] = []
