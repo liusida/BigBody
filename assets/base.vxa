@@ -7,7 +7,19 @@
     <EnableTargetCloseness>0</EnableTargetCloseness>
     <ReinitializeInitialPositionAfterThisManySeconds>1</ReinitializeInitialPositionAfterThisManySeconds>
     <FitnessFunction>
-      <mtVAR>x</mtVAR>
+      <mtDIV>
+        <mtADD>
+          <mtMUL>
+            <mtVAR>x</mtVAR>
+            <mtVAR>x</mtVAR>
+          </mtMUL>
+          <mtMUL>
+            <mtVAR>y</mtVAR>
+            <mtVAR>y</mtVAR>
+          </mtMUL>
+        </mtADD>
+        <mtVAR>num_voxel</mtVAR>
+      </mtDIV>
     </FitnessFunction>
     <RecordHistory>
       <RecordStepSize>0</RecordStepSize>
@@ -38,7 +50,7 @@
       <StopConditionFormula>
         <mtSUB>
           <mtVAR>t</mtVAR>
-          <mtCONST>5</mtCONST>
+          <mtCONST>2</mtCONST>
         </mtSUB>
       </StopConditionFormula>
     </StopCondition>
@@ -94,7 +106,7 @@
           <Fail_Strain>0</Fail_Strain>
           <Density>1e+06</Density>
           <Poissons_Ratio>0.35</Poissons_Ratio>
-          <CTE>0.03</CTE>
+          <CTE>0.01</CTE>
           <MaterialTempPhase>0</MaterialTempPhase>
           <uStatic>1</uStatic>
           <uDynamic>0.5</uDynamic>
@@ -150,7 +162,7 @@
           <uDynamic>0.5</uDynamic>
         </Mechanical>
       </Material>
-      
+
     </Palette>
     <Structure Compression="ASCII_READABLE">
       <X_Voxels>6</X_Voxels>
