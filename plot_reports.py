@@ -66,7 +66,7 @@ plt.legend()
 plt.savefig("boxplot.png")
 plt.close()
 plt.figure(figsize=(9,6))
-pboxplot = plt.boxplot(x1)
+pboxplot = plt.boxplot(x1, showfliers=False)
 plt.xticks(ticks, ticks)
 for patch in pboxplot['boxes']:
     patch.set_color("#DDDDDD")
