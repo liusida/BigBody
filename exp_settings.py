@@ -18,7 +18,7 @@ def body_dimension(generation=0):
 def mutation_rate(generation=0):
     if generation==0:
         ret = [2, 0.5]    # this is aggressive
-    elif generation<10:
+    elif generation<20:
         ret = [20, 0.05]    # this is less aggressive
     else:
         ret = [200, 0.001]    # this is stable
@@ -27,10 +27,11 @@ def mutation_rate(generation=0):
 
 # 3. effect at next generation:
 def target_population_size(generation=0):
-    ret = int(10 + generation/10)
+    # ret = int(30 + generation/20)
+    ret = 80
     print(f"Using population size {ret}")
     return ret
 
 # =================== cannot change during evolution: =======================
-experiment_name = "v040801"
+experiment_name = "v040802"
 hidden_layers = [10,10,10]
