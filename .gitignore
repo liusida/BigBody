@@ -18,6 +18,8 @@ bestsofar
 bestsofar/*
 BigBody*.out
 rebuild.sh
+core.*
+*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
