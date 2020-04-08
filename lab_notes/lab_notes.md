@@ -10,4 +10,4 @@ I started another exp on DG in folder BigBody2 with 3 GPUs (no more GPUs availab
 
 ## Apr 7.
 
-The two exps runs, both with 8 GPUs. So far so good. the body dimension grew to 20x20x20.
+The two exps runs, in folder BigBody and BigBody1, both with 8 GPUs. So far so good. the body dimension grew to 20x20x20.
