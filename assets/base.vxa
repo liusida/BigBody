@@ -18,9 +18,6 @@
             <mtVAR>y</mtVAR>
           </mtMUL>
         </mtADD>
-        <mtSQRT>
-          <mtVAR>num_voxel</mtVAR>
-        </mtSQRT>
       </mtDIV>
     </FitnessFunction>
     <RecordHistory>

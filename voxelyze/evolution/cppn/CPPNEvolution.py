@@ -24,7 +24,7 @@ class CPPNEvolution(Evolution):
             body_float, phaseoffset = self.population["genotype"][robot_id]["CPPN"].get_output(self.body_dimension)
             # get body integer value from float output, and zero out phaseoffset for non-voxel.
             body = np.zeros(self.body_dimension, dtype=int)
-            threshold = np.amax(body_float) - (np.amax(body_float) - np.amin(body_float))*0.5
+            threshold = np.quantile(body_float, 0.7) # force the body to be 70% full to avoid cube.
             body[body_float>threshold] = 1
             body = largest_component(body)
             phaseoffset[body==0] = 0.
