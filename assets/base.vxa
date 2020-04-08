@@ -7,18 +7,16 @@
     <EnableTargetCloseness>0</EnableTargetCloseness>
     <ReinitializeInitialPositionAfterThisManySeconds>1</ReinitializeInitialPositionAfterThisManySeconds>
     <FitnessFunction>
-      <mtDIV>
-        <mtADD>
-          <mtMUL>
-            <mtVAR>x</mtVAR>
-            <mtVAR>x</mtVAR>
-          </mtMUL>
-          <mtMUL>
-            <mtVAR>y</mtVAR>
-            <mtVAR>y</mtVAR>
-          </mtMUL>
-        </mtADD>
-      </mtDIV>
+      <mtADD>
+        <mtMUL>
+          <mtVAR>x</mtVAR>
+          <mtVAR>x</mtVAR>
+        </mtMUL>
+        <mtMUL>
+          <mtVAR>y</mtVAR>
+          <mtVAR>y</mtVAR>
+        </mtMUL>
+      </mtADD>
     </FitnessFunction>
     <RecordHistory>
       <RecordStepSize>0</RecordStepSize>
