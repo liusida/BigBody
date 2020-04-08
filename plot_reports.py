@@ -8,6 +8,7 @@ import matplotlib.ticker as plticker
 # experiment_name = "v040711"
 
 x = []
+x1 = []
 body = []
 mut = []
 pop = []
@@ -21,15 +22,19 @@ for generation in range(10000):
     report = etree.parse(report_filename)
     detail = report.xpath("/report/detail")[0]
     fitnesses = []
+    num_voxels = []
     # read all detail. robot_id and fitness.
     for robot in detail:
         robot_id = int(re.search(r'\d+', robot.tag).group())
         fitness = float(robot.xpath("fitness_score")[0].text)
+        num_voxel = int(robot.xpath("num_voxel")[0].text)
         fitnesses.append(fitness)
+        num_voxels.append(num_voxel)
     body.append(body_dimension(generation)[0])
     mut.append(mutation_rate(generation)[1])
     pop.append(target_population_size(generation))
     x.append(fitnesses)
+    x1.append(num_voxels)
 
 large_f = max(x[-1])
 ticks = []
@@ -59,4 +64,10 @@ plt.plot(xx,mut, label=f"mutate: {large_m}")
 plt.plot(xx,pop, label=f"pop: {large_p}")
 plt.legend()
 plt.savefig("boxplot.png")
+plt.close()
+plt.figure(figsize=(9,6))
+pboxplot = plt.boxplot(x1)
+for patch in pboxplot['boxes']:
+    patch.set_color("#DDDDDD")
+plt.savefig("boxplot_num_voxels.png")
 plt.close()
