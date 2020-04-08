@@ -17,7 +17,7 @@ boxplot.png
 bestsofar
 bestsofar/*
 BigBody*.out
-
+rebuild.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
