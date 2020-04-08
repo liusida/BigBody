@@ -14,6 +14,10 @@ vx3_node_worker
 *.history
 test_*
 boxplot.png
+bestsofar
+bestsofar/*
+BigBody*.out
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
