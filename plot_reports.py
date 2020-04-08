@@ -67,6 +67,7 @@ plt.savefig("boxplot.png")
 plt.close()
 plt.figure(figsize=(9,6))
 pboxplot = plt.boxplot(x1)
+plt.xticks(ticks, ticks)
 for patch in pboxplot['boxes']:
     patch.set_color("#DDDDDD")
 plt.savefig("boxplot_num_voxels.png")
