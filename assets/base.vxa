@@ -47,7 +47,7 @@
       <StopConditionFormula>
         <mtSUB>
           <mtVAR>t</mtVAR>
-          <mtCONST>2</mtCONST>
+          <mtCONST>5</mtCONST>
         </mtSUB>
       </StopConditionFormula>
     </StopCondition>
