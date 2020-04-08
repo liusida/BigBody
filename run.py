@@ -67,7 +67,7 @@ while(True):
     # vx.write_box_plot(experiment_name, generation, sorted_result)
 
     # report the fitness
-    top_n = len(sorted_result['id'])
+    top_n = 3 #len(sorted_result['id'])
     msg = f"Experiment {experiment_name}, simulation for generation {generation} finished.\nThe top {top_n} bestfit fitness score of this generation are \n"
     for i in range(top_n):
         if i<len(sorted_result['id']):
