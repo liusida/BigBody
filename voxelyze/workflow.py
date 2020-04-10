@@ -42,7 +42,14 @@ def read_report(experiment_name, generation):
     # read all detail. robot_id and fitness.
     for robot in detail:
         robot_id = int(re.search(r'\d+', robot.tag).group())
-        fitness = float(robot.xpath("fitness_score")[0].text)
+        # fitness = float(robot.xpath("fitness_score")[0].text)
+        init_x = float(robot.xpath("initialCenterOfMass/x")[0].text)
+        init_y = float(robot.xpath("initialCenterOfMass/y")[0].text)
+        init_z = float(robot.xpath("initialCenterOfMass/z")[0].text)
+        end_x = float(robot.xpath("currentCenterOfMass/x")[0].text)
+        end_y = float(robot.xpath("currentCenterOfMass/y")[0].text)
+        end_z = float(robot.xpath("currentCenterOfMass/z")[0].text)
+        fitness = end_z * 10 + np.sqrt((end_x-init_x)**2 + (end_y-init_y)**2)
         sorted_result["id"].append(robot_id)
         sorted_result["fitness"].append(fitness)
     return sorted_result

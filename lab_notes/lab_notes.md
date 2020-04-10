@@ -33,3 +33,22 @@ Reading http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.28.5457&rep=rep
 
 Geno --\[NEAT\]--> Network --\[CPPN\]--> Body/Phaseoffset
 
+## Apr 10. (1)
+
+With 70% voxels, the body start to fall, slowly, no matter how I change the reinit position time, it only select for someone fall more slowly.
+
+Add a term 10*z*abs(z) to the fitness function, and no reinit. so it will punish fall.
+
+Start the 4th experiment in BigBody3 folder.
+
+## Apr 10. (2)
+
+Fitness score should be calculated in Python. So simulation only report facts, and calculation is done in `workflow.py`.
+
+Now we are using 
+
+```
+fitness = end_z * 10 + np.sqrt((end_x-init_x)**2 + (end_y-init_y)**2)
+```
+
+Restart the 4th experiment in BidBody3 folder.
