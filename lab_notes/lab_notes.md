@@ -52,3 +52,16 @@ fitness = end_z * 10 + np.sqrt((end_x-init_x)**2 + (end_y-init_y)**2)
 ```
 
 Restart the 4th experiment in BidBody3 folder.
+
+## Apr 10. (3)
+
+Seems new exp is good. Start another identical one in BigBody4 folder.
+
+## Apr 10. (4)
+
+FALLING AGAIN! WTF!!!
+
+Set evaluation time to 10 sec. See who is going to fall again!
+
+Restart experiments in BigBody3 and 4.
+
