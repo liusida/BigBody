@@ -65,3 +65,8 @@ Set evaluation time to 10 sec. See who is going to fall again!
 
 Restart experiments in BigBody3 and 4.
 
+## Apr 10. (5)
+
+SO FAR SO GOOD! 10 sec is great! except require more running time. It's worthy.
+
+Now we at least have two 10x10x10 interesting ones.
