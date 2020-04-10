@@ -5,28 +5,17 @@
   </GPU>
   <Simulator>
     <EnableTargetCloseness>0</EnableTargetCloseness>
-    <!-- <ReinitializeInitialPositionAfterThisManySeconds>3</ReinitializeInitialPositionAfterThisManySeconds> -->
     <FitnessFunction>
+      <!-- not used anymore, only calculate a score for plotting. -->
       <mtADD>
         <mtMUL>
-          <mtCONST>10</mtCONST>
-          <mtMUL>
-            <mtVAR>z</mtVAR>
-            <mtABS>
-              <mtVAR>z</mtVAR>
-            </mtABS>
-          </mtMUL>
+          <mtVAR>x</mtVAR>
+          <mtVAR>x</mtVAR>
         </mtMUL>
-        <mtADD>
-          <mtMUL>
-            <mtVAR>x</mtVAR>
-            <mtVAR>x</mtVAR>
-          </mtMUL>
-          <mtMUL>
-            <mtVAR>y</mtVAR>
-            <mtVAR>y</mtVAR>
-          </mtMUL>
-        </mtADD>
+        <mtMUL>
+          <mtVAR>y</mtVAR>
+          <mtVAR>y</mtVAR>
+        </mtMUL>
       </mtADD>
     </FitnessFunction>
     <RecordHistory>
