@@ -5,17 +5,28 @@
   </GPU>
   <Simulator>
     <EnableTargetCloseness>0</EnableTargetCloseness>
-    <ReinitializeInitialPositionAfterThisManySeconds>3</ReinitializeInitialPositionAfterThisManySeconds>
+    <!-- <ReinitializeInitialPositionAfterThisManySeconds>3</ReinitializeInitialPositionAfterThisManySeconds> -->
     <FitnessFunction>
       <mtADD>
         <mtMUL>
-          <mtVAR>x</mtVAR>
-          <mtVAR>x</mtVAR>
+          <mtCONST>10</mtCONST>
+          <mtMUL>
+            <mtVAR>z</mtVAR>
+            <mtABS>
+              <mtVAR>z</mtVAR>
+            </mtABS>
+          </mtMUL>
         </mtMUL>
-        <mtMUL>
-          <mtVAR>y</mtVAR>
-          <mtVAR>y</mtVAR>
-        </mtMUL>
+        <mtADD>
+          <mtMUL>
+            <mtVAR>x</mtVAR>
+            <mtVAR>x</mtVAR>
+          </mtMUL>
+          <mtMUL>
+            <mtVAR>y</mtVAR>
+            <mtVAR>y</mtVAR>
+          </mtMUL>
+        </mtADD>
       </mtADD>
     </FitnessFunction>
     <RecordHistory>
@@ -47,7 +58,7 @@
       <StopConditionFormula>
         <mtSUB>
           <mtVAR>t</mtVAR>
-          <mtCONST>5</mtCONST>
+          <mtCONST>2</mtCONST>
         </mtSUB>
       </StopConditionFormula>
     </StopCondition>
