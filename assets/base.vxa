@@ -6,7 +6,7 @@
   <Simulator>
     <EnableTargetCloseness>0</EnableTargetCloseness>
     <FitnessFunction>
-      <!-- not used anymore, only calculate a score for plotting. -->
+      <!-- not used anymore -->
       <mtADD>
         <mtMUL>
           <mtVAR>x</mtVAR>

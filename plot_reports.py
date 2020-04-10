@@ -9,6 +9,7 @@ import matplotlib.ticker as plticker
 
 x = []
 x1 = []
+x2 = []
 body = []
 mut = []
 pop = []
@@ -21,20 +22,29 @@ for generation in range(10000):
         break
     report = etree.parse(report_filename)
     detail = report.xpath("/report/detail")[0]
-    fitnesses = []
+    distances = []
     num_voxels = []
-    # read all detail. robot_id and fitness.
+    end_zs = []
+    # read all detail. robot_id and distance.
     for robot in detail:
         robot_id = int(re.search(r'\d+', robot.tag).group())
-        fitness = float(robot.xpath("fitness_score")[0].text)
+        init_x = float(robot.xpath("initialCenterOfMass/x")[0].text)
+        init_y = float(robot.xpath("initialCenterOfMass/y")[0].text)
+        init_z = float(robot.xpath("initialCenterOfMass/z")[0].text)
+        end_x = float(robot.xpath("currentCenterOfMass/x")[0].text)
+        end_y = float(robot.xpath("currentCenterOfMass/y")[0].text)
+        end_z = float(robot.xpath("currentCenterOfMass/z")[0].text)
+        distance = np.sqrt((end_x-init_x)**2 + (end_y-init_y)**2)
         num_voxel = int(robot.xpath("num_voxel")[0].text)
-        fitnesses.append(fitness)
+        distances.append(distance)
+        end_zs.append(end_z)
         num_voxels.append(num_voxel)
     body.append(body_dimension(generation)[0])
     mut.append(mutation_rate(generation)[1])
     pop.append(target_population_size(generation))
-    x.append(fitnesses)
+    x.append(distances)
     x1.append(num_voxels)
+    x2.append(end_zs)
 
 large_f = max(x[-1])
 ticks = []
@@ -63,12 +73,25 @@ plt.plot(xx,body, label=f"body: {large_b}")
 plt.plot(xx,mut, label=f"mutate: {large_m}")
 plt.plot(xx,pop, label=f"pop: {large_p}")
 plt.legend()
+plt.ylabel("Travel Distance")
+plt.xlabel("Generation")
 plt.savefig("boxplot.png")
 plt.close()
+
 plt.figure(figsize=(9,6))
 pboxplot = plt.boxplot(x1, showfliers=False)
 plt.xticks(ticks, ticks)
 for patch in pboxplot['boxes']:
     patch.set_color("#DDDDDD")
 plt.savefig("boxplot_num_voxels.png")
+plt.close()
+
+plt.figure(figsize=(9,6))
+pboxplot = plt.boxplot(x2, showfliers=False)
+plt.xticks(ticks, ticks)
+plt.xlabel("Generation")
+plt.ylabel("Height of the Center of Mass in the end.")
+for patch in pboxplot['boxes']:
+    patch.set_color("#DDDDDD")
+plt.savefig("boxplot_end_z.png")
 plt.close()
