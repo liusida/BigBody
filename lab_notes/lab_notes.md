@@ -76,3 +76,5 @@ Now we at least have two 10x10x10 interesting ones.
 Big ones tend to be too soft to move. To confirm this, I started another identical experiment BigBody5, to see if at the same scale, the body be unable to move.
 
 Then I add another output node to CPPN, indicating the proportion of BONEs, so the final robot won't be merely a MEAT ball.
+
+Started another experiment with bone in BigBody6. (Don't forget set t=10.)
