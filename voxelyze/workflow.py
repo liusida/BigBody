@@ -38,7 +38,7 @@ def read_report(experiment_name, generation):
     report_filename = f"{foldername_generation(experiment_name, generation)}/report/output.xml"
     report = etree.parse(report_filename)
     detail = report.xpath("/report/detail")[0]
-    sorted_result = {"id": [], "fitness": []}
+    result = {"id": [], "fitness": []}
     # read all detail. robot_id and fitness.
     for robot in detail:
         robot_id = int(re.search(r'\d+', robot.tag).group())
@@ -50,8 +50,14 @@ def read_report(experiment_name, generation):
         end_y = float(robot.xpath("currentCenterOfMass/y")[0].text)
         end_z = float(robot.xpath("currentCenterOfMass/z")[0].text)
         fitness = end_z * 10 + np.sqrt((end_x-init_x)**2 + (end_y-init_y)**2)
-        sorted_result["id"].append(robot_id)
-        sorted_result["fitness"].append(fitness)
+        result["id"].append(robot_id)
+        result["fitness"].append(fitness)
+    # sort by fitness desc
+    sorted_result = {"id": [], "fitness": []}
+    args = np.argsort(result["fitness"])[::-1]
+    for idx in args:
+        sorted_result["id"].append(result["id"][idx])
+        sorted_result["fitness"].append(result["fitness"][idx])
     return sorted_result
 
 def copy_and_add_recordset(src, dst, stepsize, stopsec):
@@ -66,18 +72,18 @@ def copy_and_add_recordset(src, dst, stepsize, stopsec):
     with open(dst, "wb") as file:
         file.write(etree.tostring(best_fit))
 
-def record_bestfit_history(experiment_name, generation, stepsize=100, stopsec=1):
+def record_bestfit_history(experiment_name, generation, robot_id, stepsize=100, stopsec=1):
     import shutil
     foldername = foldername_generation(experiment_name, generation)
-    report_filename = f"{foldername}/report/output.xml"
     history_foldername = f"{foldername}/bestfit/"
-    for root, dirs, files in os.walk(history_foldername):
-        for f in files:
-            os.remove(os.path.join(root, f))
-    report = etree.parse(report_filename)
-    best_fit_filename = report.xpath("/report/bestfit/filename")[0].text
+    # report_filename = f"{foldername}/report/output.xml"
+    # for root, dirs, files in os.walk(history_foldername):
+    #     for f in files:
+    #         os.remove(os.path.join(root, f))
+    # report = etree.parse(report_filename)
+    # best_fit_filename = report.xpath("/report/bestfit/filename")[0].text
     #vxd
-    copy_and_add_recordset(f"{foldername}/start_population/{best_fit_filename}", f"{history_foldername}/{best_fit_filename}", stepsize, stopsec)
+    copy_and_add_recordset(f"{foldername}/start_population/robot_{robot_id:04}.vxd", f"{history_foldername}/robot_{robot_id:04}.vxd", stepsize, stopsec)
     #vxa
     shutil.copy("assets/base.vxa", f"{history_foldername}/base.vxa")
     #run (for convenience, we use linux pipeline here. if you use windows, please modify accrodingly.)

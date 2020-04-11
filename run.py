@@ -57,12 +57,11 @@ while(True):
     # start simulator
     print("simulating...")
     vx.start_simulator(experiment_name, generation)
+    # read report
+    sorted_result = vx.read_report(experiment_name, generation)
     # record a brief history for the bestfit
     print("recording...")
-    vx.record_bestfit_history(experiment_name, generation, stopsec=2)
-
-    # read reporter
-    sorted_result = vx.read_report(experiment_name, generation)
+    vx.record_bestfit_history(experiment_name, generation, robot_id=sorted_result["id"][0], stopsec=2)
 
     # vx.write_box_plot(experiment_name, generation, sorted_result)
 
