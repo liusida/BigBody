@@ -10,7 +10,7 @@ for fn in activation_functions:
 
 class CPPN:
     input_node_names = ['x', 'y', 'z', 'd', 'b']
-    output_node_names = ['body', 'phaseoffset']
+    output_node_names = ['body', 'phaseoffset','bone_proportion']
     def __init__(self):
         # There are many differences between networkx 1.x and 2.x, we'll use 2.x
         assert float(nx.__version__)>2.0
@@ -175,6 +175,7 @@ class CPPN:
     def get_output(self,body_dimension):
         body = np.zeros(body_dimension)
         phaseoffset = np.zeros(body_dimension)
+        bone_proportion = np.zeros(body_dimension)
         input_x = np.zeros(body_dimension)
         input_y = np.zeros(body_dimension)
         input_z = np.zeros(body_dimension)
@@ -193,4 +194,5 @@ class CPPN:
         ret = self.compute({'x':input_x,'y':input_y,'z':input_z,'d':input_d,'b':1})
         body = ret["body"]
         phaseoffset = ret["phaseoffset"]
-        return body, phaseoffset
+        bone_proportion = ret["bone_proportion"]
+        return body, phaseoffset, bone_proportion

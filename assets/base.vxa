@@ -113,9 +113,9 @@
         <MatType>0</MatType>
         <Name>Bone</Name>
         <Display>
-          <Red>0.2</Red>
-          <Green>0.2</Green>
-          <Blue>0.2</Blue>
+          <Red>0.5</Red>
+          <Green>0.5</Green>
+          <Blue>0.5</Blue>
           <Alpha>0.8</Alpha>
         </Display>
         <Mechanical>

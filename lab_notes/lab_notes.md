@@ -70,3 +70,9 @@ Restart experiments in BigBody3 and 4.
 SO FAR SO GOOD! 10 sec is great! except require more running time. It's worthy.
 
 Now we at least have two 10x10x10 interesting ones.
+
+## Apr 11. (1)
+
+Big ones tend to be too soft to move. To confirm this, I started another identical experiment BigBody5, to see if at the same scale, the body be unable to move.
+
+Then I add another output node to CPPN, indicating the proportion of BONEs, so the final robot won't be merely a MEAT ball.
