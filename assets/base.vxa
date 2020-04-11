@@ -6,7 +6,7 @@
   <Simulator>
     <EnableTargetCloseness>0</EnableTargetCloseness>
     <FitnessFunction>
-      <mtCONST>-1</mtCONST>
+      <mtCONST>0</mtCONST>
     </FitnessFunction>
     <RecordHistory>
       <RecordStepSize>0</RecordStepSize>
