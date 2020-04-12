@@ -101,22 +101,22 @@
       </Material>
       <Material ID="2">
         <MatType>0</MatType>
-        <Name>Bone</Name>
+        <Name>LightFat</Name>
         <Display>
-          <Red>0.5</Red>
-          <Green>0.5</Green>
-          <Blue>0.5</Blue>
-          <Alpha>0.8</Alpha>
+          <Red>1.0</Red>
+          <Green>1.0</Green>
+          <Blue>1.0</Blue>
+          <Alpha>0.5</Alpha>
         </Display>
         <Mechanical>
           <MatModel>0</MatModel>
-          <Elastic_Mod>3e+09</Elastic_Mod>
+          <Elastic_Mod>3e+07</Elastic_Mod>
           <Plastic_Mod>0</Plastic_Mod>
           <Yield_Stress>0</Yield_Stress>
           <FailModel>0</FailModel>
           <Fail_Stress>0</Fail_Stress>
           <Fail_Strain>0</Fail_Strain>
-          <Density>1e+06</Density>
+          <Density>1e+04</Density>
           <Poissons_Ratio>0.35</Poissons_Ratio>
           <CTE>0</CTE>
           <MaterialTempPhase>0</MaterialTempPhase>

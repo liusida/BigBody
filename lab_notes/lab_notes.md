@@ -78,3 +78,27 @@ Big ones tend to be too soft to move. To confirm this, I started another identic
 Then I add another output node to CPPN, indicating the proportion of BONEs, so the final robot won't be merely a MEAT ball.
 
 Started another experiment with bone in BigBody6. (Don't forget set t=10.)
+
+## Apr 11. (2)
+
+change the logic: it should be empty -> muscle -> bone, not empty -> bone -> muscle, so bone propbably is inside muscle, not outside. (for BigBody6)
+
+Restart exp BigBody5 and BigBody6 with the same seed 802.
+
+## Apr 11. (3)
+
+BB3 and BB4 stopped. BB5 and BB6 has a bug, didn't sort by fitness score, so no evolution happen. :(
+
+BB5 started on dg-gpunode09 with 7 gpus. v041124
+22099     dggpu      BB5    sliu1  R       0:06      1 dg-gpunode09
+
+BB6 started on dg-gpunode06 with 8 gpus. v041123
+22092     dggpu      BB6    sliu1  R       6:08      1 dg-gpunode06
+
+## Apr 11. (4)
+
+Bone is too slow to simulate. If the elastic modulus increase 100 times, the simulation will be 10 times slower. :~(
+
+So in this sense, simulation for soft robots is not suitable for rigid body.
+
+Set Material 2 to a light, but non-actuate material (LightFat), with the same elastic modulus.
