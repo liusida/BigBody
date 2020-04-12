@@ -135,5 +135,33 @@ Resolution... Actually we can design an experiment that the only difference is t
 
 suppose at the beginning, vox_size=1m, vox_dim=1, if we increase vox_dim to be 3, vox_size should be 1/3 m, then everything will be the same? Let try.
 
-Start experiment BB9. to test only change resolution.
+Start experiment BB9 with 8 gpus, random=802. to test only change resolution.
+
+Start experiment BBA with 2 gpus. random=1
+
+Promising!
+
+## Apr 12. (1)
+
+BB9 and BBA are doing a great job. now they have 16x16x16 body.
+
+BB5 failed as expect (it is a control exp). body is too soft and heavy and crash.
+But the treatment BB7 failed to develop interesting shape. it doesn't move at all.
+
+Since "high resolution" plan is working, stop BB5 and BB7, free resource to start another one identical (to BB9) BBB using difference random seeds 808.
+
+Start experiment BBB with 8 gpus, random=808, 5 gen/dim
+
+Start BBC using random seeds 808 but with quicker growth, not 5 generations per voxel in dimension, but only 2 generations per voxel in dimension. See if it can increase resolution faster than BB9 BBA and BBB and still works.
+
+Start experiment BBC with 7 gpus, random=808, 2 gen/dim
+
+## Apr 12. (2)
+
+BB8 is a control. directly evolving 30x30x30, but it is super slow, takes 3 hours per generation.
+
+I need another control, BB8 has two types of material, and not shrink voxel size. so let me start another BBD, with the same setting with BBB (random 808), but directly evolving 30x30x30.
+
+Start experiment BBD with 8 gpus, random=808, direct 30.
+
 
