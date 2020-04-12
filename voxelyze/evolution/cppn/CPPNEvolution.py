@@ -21,15 +21,16 @@ class CPPNEvolution(Evolution):
         self.population["phenotype"] = []
 
         for robot_id in range(len(self.population["genotype"])):
-            body_float, phaseoffset, bone_proportion = self.population["genotype"][robot_id]["CPPN"].get_output(self.body_dimension)
-            bone_proportion = np.mean(bone_proportion)
+            # do resolution, no need. # body_float, phaseoffset, bone_proportion = self.population["genotype"][robot_id]["CPPN"].get_output(self.body_dimension)
+            body_float, phaseoffset = self.population["genotype"][robot_id]["CPPN"].get_output(self.body_dimension)
+            # do resolution, no need. # bone_proportion = np.mean(bone_proportion)
             # get body integer value from float output, and zero out phaseoffset for non-voxel.
             body = np.zeros(self.body_dimension, dtype=int)
             body_proportion = 0.2 # force the body to be 80% full to avoid cube.
             threshold = np.quantile(body_float, body_proportion) 
-            threshold_bone = np.quantile(body_float, 1-bone_proportion*(1-body_proportion))
+            # do resolution, no need. # threshold_bone = np.quantile(body_float, 1-bone_proportion*(1-body_proportion))
             body[body_float>threshold] = 1 # Material 1: Muscle
-            body[body_float>threshold_bone] = 2 # Material 2: Bone
+            # do resolution, no need. # body[body_float>threshold_bone] = 2 # Material 2: Bone
             # so that Bone / (Bone + Muscel) = bone_proportion
             # body = [[ none ] t [ BONE ] p [ MUSCLE ]]
             body = largest_component(body)
