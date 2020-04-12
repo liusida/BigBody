@@ -102,3 +102,21 @@ Bone is too slow to simulate. If the elastic modulus increase 100 times, the sim
 So in this sense, simulation for soft robots is not suitable for rigid body.
 
 Set Material 2 to a light, but non-actuate material (LightFat), with the same elastic modulus.
+
+Deleted BB6, Bone, too slow.
+BB7 started on dg-gpunode06 with 8 gpus. v04112155
+22101     dggpu      BB7    sliu1  R       1:43      1 dg-gpunode06
+
+## Apr 11. (5)
+
+results of BB3(random=128) and BB4(random=4) seems clear, summarize as follow:
+
+Both CTE=0.01;
+Both exp peak at body 14x14x14. then when body grow bigger, travel distance decreases.
+High density makes the body too heavy and no longer able to life the feet.
+
+BB3 and BB4 terminated. Should be included in report.
+
+BB2 is softly and slowly falling. no use.
+BB1 before gen170, is CTE=0.03, cube, walking. But not realistic. But at generation 80 (18x18x18), it runs quite happily. 
+BB before gen168, is CTE=0.03, cube with a tail, walking, but not realistic, same as BB1. gen 80, it was jumping, seems cheating.
