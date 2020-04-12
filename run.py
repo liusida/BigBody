@@ -42,9 +42,6 @@ else:
     # resize using new body_dimension
     evolution = CPPNEvolution()
     init_body_dimension_n(evolution_dic["body_dimension"][0])
-    # evolution_dic["target_population_size"] = target_population_size(generation)
-    # evolution_dic["body_dimension"] = body_dimension(generation)
-    # evolution_dic["mutation_rate"] = mutation_rate(generation)
     evolution.load_dic(evolution_dic)
 
 # infinity evolutionary loop
