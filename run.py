@@ -41,9 +41,10 @@ if evolution_dic is None:
 else:
     # resize using new body_dimension
     evolution = CPPNEvolution()
-    evolution_dic["target_population_size"] = target_population_size(generation)
-    evolution_dic["body_dimension"] = body_dimension(generation)
-    evolution_dic["mutation_rate"] = mutation_rate(generation)
+    init_body_dimension_n(evolution_dic["body_dimension"][0])
+    # evolution_dic["target_population_size"] = target_population_size(generation)
+    # evolution_dic["body_dimension"] = body_dimension(generation)
+    # evolution_dic["mutation_rate"] = mutation_rate(generation)
     evolution.load_dic(evolution_dic)
 
 # infinity evolutionary loop
@@ -59,12 +60,6 @@ while(True):
     vx.start_simulator(experiment_name, generation)
     # read report
     sorted_result = vx.read_report(experiment_name, generation)
-    # record a brief history for the bestfit
-    print("recording...")
-    vx.record_bestfit_history(experiment_name, generation, robot_id=sorted_result["id"][0], stopsec=2)
-
-    # vx.write_box_plot(experiment_name, generation, sorted_result)
-
     # report the fitness
     top_n = 3 #len(sorted_result['id'])
     msg = f"Experiment {experiment_name}, simulation for generation {generation} finished.\nThe top {top_n} bestfit fitness score of this generation are \n"
@@ -74,13 +69,19 @@ while(True):
             msg += f"{evolution.population['genotype'][robot_id]['firstname']} {evolution.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
     print(msg, flush=True)
 
+    # record a brief history for the bestfit
+    print("recording...")
+    vx.record_bestfit_history(experiment_name, generation, robot_id=sorted_result["id"][0], stopsec=2)
+
+    # vx.write_box_plot(experiment_name, generation, sorted_result)
+
     # reporting
     # import sida.slackbot.bot as bot
     # bot.send(msg, 1, "GUB0XS56E")
 
     # dynamical sceduling
     evolution.target_population_size = target_population_size(generation)
-    evolution.body_dimension = body_dimension(generation)
+    evolution.body_dimension = body_dimension(generation, sorted_result["fitness"])
     evolution.mutation_rate = mutation_rate(generation)
 
     # write report png
