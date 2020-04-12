@@ -20,6 +20,7 @@ BigBody*.out
 rebuild.sh
 core.*
 *.png
+output.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

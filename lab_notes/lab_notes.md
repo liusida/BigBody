@@ -120,3 +120,20 @@ BB3 and BB4 terminated. Should be included in report.
 BB2 is softly and slowly falling. no use.
 BB1 before gen170, is CTE=0.03, cube, walking. But not realistic. But at generation 80 (18x18x18), it runs quite happily. 
 BB before gen168, is CTE=0.03, cube with a tail, walking, but not realistic, same as BB1. gen 80, it was jumping, seems cheating.
+
+## Apr 11. (6)
+
+So scaffolding from smaller one is hard to transfer to larger body, there is pysical limitation. The conclusion is that, given the same material and envrionment, it is not just resolution difference between 10-voxel body and 1000-voxel body, there is real body size difference between them. The simulation can give us clear description of what will happen when the body gets bigger.
+
+Now try to directly search for 30x30x30 body in BB8.
+
+started BB8 with 8 gpus. v04112232
+
+## Apr 11. (7)
+
+Resolution... Actually we can design an experiment that the only difference is the resolution.
+
+suppose at the beginning, vox_size=1m, vox_dim=1, if we increase vox_dim to be 3, vox_size should be 1/3 m, then everything will be the same? Let try.
+
+Start experiment BB9. to test only change resolution.
+

@@ -172,6 +172,13 @@ def write_all_vxd(experiment_name, generation, mutation_dic):
         body = robot["phenotype"]["body"]
         phaseoffset = robot["phenotype"]["phaseoffset"]
         Z,Y,X = body.shape
+        
+        # shrink the size of a single voxel according to the dimension of body, so that the only change is the resolution.
+        Lattice_Dim = child(xRoot, "Lattice_Dim")
+        Lattice_Dim.set('replace', 'VXA.VXC.Lattice.Lattice_Dim')
+        Lattice_Dim.text = float(0.1/Z)
+        # shrink end
+        
         xStructure = child(xRoot, "Structure")
         xStructure.set('replace', 'VXA.VXC.Structure')
         xStructure.set('Compression', 'ASCII_READABLE')
