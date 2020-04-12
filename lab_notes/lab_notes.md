@@ -165,3 +165,18 @@ I need another control, BB8 has two types of material, and not shrink voxel size
 Start experiment BBD with 8 gpus, random=808, direct 30.
 
 
+## Apr 12. (3)
+
+Unfortunately, BB9, BBA, BBB, BBC all peaked at certain scale and the fitness goes down. Maybe not enough time to adapt.
+
+BB9 peak at Gen30, 8x8x8, 5 gen/dim, dist=0.42, random=802
+BBA peak at Gen30, 8x8x8, 5 gen/dim, dist=0.42, random=1
+BBB peak at Gen35, 9x9x9, 5 gen/dim, dist=0.18, random=808
+BBC peak at Gen16, 10x10x10, 2 gen/dim, dist=0.18, random=808
+BBD still running, 30x30x30, , dist=0.06, random=808
+
+Need more generation per body_dim. If not surpass the previous max, don't increase.
+
+Start new exp BBE with new schedualing: only increase body dimension after surpass the performance of last body dimension 5% 3times.
+
+Start BBE with 1 gpu interactively, random=802.
