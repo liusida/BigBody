@@ -22,6 +22,7 @@ for generation in range(10000):
         generation_config = json.load(f)
 
     body_n = generation_config["body_dimension"][0]
+    target_population_size = generation_config["target_population_size"]
     print(f"Body Dimension: {body_n}")
     report_filename = f"{folder}/report/output.xml"
     if not os.path.exists(report_filename):
@@ -47,7 +48,7 @@ for generation in range(10000):
         num_voxels.append(num_voxel)
     body.append(body_n)
     mut.append(mutation_rate(generation)[1])
-    pop.append(target_population_size(generation))
+    pop.append(target_population_size)
     x.append(distances)
     x1.append(num_voxels)
     x2.append(end_zs)
