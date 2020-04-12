@@ -53,10 +53,10 @@ def mutation_rate(generation=0):
 # 3. effect at next generation:
 def target_population_size(generation=0):
     # ret = int(30 + generation/20)
-    ret = 4
+    ret = 80
     print(f"Using population size {ret}")
     return ret
 
 # =================== cannot change during evolution: =======================
-experiment_name = "v04121712"
+experiment_name = "v04121847"
 hidden_layers = [10,10,10]
