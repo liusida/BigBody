@@ -46,14 +46,19 @@ def mutation_rate(generation=0):
     #     ret = [20, 0.05]    # this is less aggressive
     # else:
     #     ret = [20, 0.001]    # this is stable
-    ret = [10, 0.01] # search more aggressively
+    ret = [9, 0.1] # search more aggressively
+    # ret[0]: 9:1
+    # every 10 times of mutation, there's once mutate on activation function, so in a generation of 40, there will be 
+    # 4 times of mutation on activation function, which hopefully bring us some new archietecture.
+    # ret[1]: 0.1
+    # if mutate on weights, set standard deviation to be 0.1, so weight change will happen mostly in (-0.3,0.3).
     print(f"Using mutation rate {ret}")
     return ret
 
 # 3. effect at next generation:
 def target_population_size(generation=0):
     # ret = int(30 + generation/20)
-    ret = 80
+    ret = 40
     print(f"Using population size {ret}")
     return ret
 
