@@ -1,10 +1,10 @@
 from exp_settings import *
 import lxml.etree as etree
-import re, os
+import re, os, json
 import voxelyze as vx
 import matplotlib.pyplot as plt
 import matplotlib.ticker as plticker
-
+import numpy as np
 # experiment_name = "v040711"
 
 x = []
@@ -17,6 +17,12 @@ for generation in range(10000):
     folder = vx.foldername_generation(experiment_name, generation)
     if folder is None:
         break
+    generation_filename = f"{folder}/mutation.json"
+    with open(generation_filename, "r", encoding="UTF-8") as f:
+        generation_config = json.load(f)
+
+    body_n = generation_config["body_dimension"][0]
+    print(f"Body Dimension: {body_n}")
     report_filename = f"{folder}/report/output.xml"
     if not os.path.exists(report_filename):
         break
@@ -39,7 +45,7 @@ for generation in range(10000):
         distances.append(distance)
         end_zs.append(end_z)
         num_voxels.append(num_voxel)
-    body.append(body_dimension(generation)[0])
+    body.append(body_n)
     mut.append(mutation_rate(generation)[1])
     pop.append(target_population_size(generation))
     x.append(distances)
