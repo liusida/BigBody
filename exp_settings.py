@@ -1,5 +1,6 @@
 import random
 import numpy as np
+from voxelyze.helper import cprint
 
 random.seed(802)
 np.random.seed(802)
@@ -22,15 +23,15 @@ def init_body_dimension_n(n):
 def body_dimension(generation=0, fitness_scores=[0]):
     global best_last_round, body_dimension_n, fitness_score_surpass_time
     fitness_score = np.median(fitness_scores)
-    print(f"Median fitness score this round: {fitness_score}.")
+    cprint(f"Median fitness score this round: {fitness_score}.")
     if fitness_score > (body_dimension_n+1)/body_dimension_n * 1.05 * best_last_round:
         fitness_score_surpass_time += 1
-        print(f"Good News: fitness score hit threshold {fitness_score_surpass_time} time(s).")
+        cprint(title=f"Good News", msg=f"fitness score hit threshold {fitness_score_surpass_time} time(s).", code="OKGREEN")
         if fitness_score_surpass_time>3:
             fitness_score_surpass_time = 0
             body_dimension_n = body_dimension_n + 1
             best_last_round = fitness_score
-            print(f"Congradulations, body dimension increase to {body_dimension_n}. Setting best median fitness score last round to {best_last_round}.")
+            cprint(title=f"Congradulations", msg=f"body dimension increase to {body_dimension_n}. Setting best median fitness score last round to {best_last_round}.", code="OKGREEN")
     # n = int(3 + generation/5)
     # # n = 30
     ret = (body_dimension_n, body_dimension_n, body_dimension_n)
@@ -52,7 +53,7 @@ def mutation_rate(generation=0):
 # 3. effect at next generation:
 def target_population_size(generation=0):
     # ret = int(30 + generation/20)
-    ret = 80
+    ret = 4
     print(f"Using population size {ret}")
     return ret
 

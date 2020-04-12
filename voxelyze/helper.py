@@ -32,7 +32,24 @@ def send_slack(msg):
         bot.send(msg,1,"GUB0XS56E") # send msg to #gpuvoxel_gpu_1
     except:
         pass
-    
+
+def cprint(title='Default', msg=None, code='ENDC'):
+    color_code = {
+        'HEADER':'\033[95m',
+        'OKBLUE':'\033[94m',
+        'OKGREEN':'\033[92m',
+        'WARNING':'\033[93m',
+        'FAIL':'\033[91m',
+        'ENDC':'\033[0m',
+        'BOLD':'\033[1m',
+        'UNDERLINE':'\033[4m',
+    }
+    if code in color_code:
+        c = color_code[code]
+    else:
+        c = color_code['ENDC']
+    print(f"{c}{title}{color_code['ENDC']}{': '+msg if msg is not None else ''}")
+
 if __name__ == "__main__":
     # testing
     def test_largest_component():
