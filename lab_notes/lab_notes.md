@@ -179,4 +179,24 @@ Need more generation per body_dim. If not surpass the previous max, don't increa
 
 Start new exp BBE with new schedualing: only increase body dimension after surpass the performance of last body dimension 5% 3times.
 
-Start BBE with 1 gpu interactively, random=802.
+Terminate BBB.
+Start BBE on dg-gpunode06 with 8 gpus, random=802.
+
+Terminate BB9.
+Try BBF with weight mutate rate: 0.1, more aggresive, and population size 40, faster.
+Start BBF on dg-jup with 8 gpus, random=802.
+
+## Apr 12. (4)
+
+asking for (dim+1)/dim is too harshing, since body never get bigger.
+instead, asking for passing multiple times. max(1,30-dim). will be better.
+faster simulation with low dim can do more rounds.
+
+Restart BBE. made a mistake, used parameter for BBF. so now BBE are using mutation rate:9, 0.1, and population of 40.
+Restart BBF with mutation rate:9, 0.1, population of 80.
+
+Restart BBE with population of 80. random seed 803.
+
+Terminate BBC.
+Start BBG. with new fitness function f= z_offset * 10 + sqrt(x_offset^2 + y_offset^2). with 7 gpus. random seed 804.
+
