@@ -2,8 +2,8 @@ import random
 import numpy as np
 from voxelyze.helper import cprint
 
-random.seed(802)
-np.random.seed(802)
+random.seed(804)
+np.random.seed(804)
 
 # ============== should be able to change during evolution: ================
 #  Plan: evolve a 100x100x100 body
@@ -59,10 +59,10 @@ def mutation_rate(generation=0):
 # 3. effect at next generation:
 def target_population_size(generation=0):
     # ret = int(30 + generation/20)
-    ret = 40
+    ret = 80
     print(f"Using population size {ret}")
     return ret
 
 # =================== cannot change during evolution: =======================
-experiment_name = "v04121847"
+experiment_name = "v04122355"
 hidden_layers = [10,10,10]
