@@ -49,7 +49,8 @@ def read_report(experiment_name, generation):
         end_x = float(robot.xpath("currentCenterOfMass/x")[0].text)
         end_y = float(robot.xpath("currentCenterOfMass/y")[0].text)
         end_z = float(robot.xpath("currentCenterOfMass/z")[0].text)
-        fitness = end_z * 10 + np.sqrt((end_x-init_x)**2 + (end_y-init_y)**2)
+        # Fitness Function: Fitness Score
+        fitness = (end_z-init_z) * 10 + np.sqrt((end_x-init_x)**2 + (end_y-init_y)**2)
         result["id"].append(robot_id)
         result["fitness"].append(fitness)
     # sort by fitness desc
