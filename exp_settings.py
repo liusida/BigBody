@@ -9,7 +9,7 @@ np.random.seed(802)
 #  Plan: evolve a 100x100x100 body
 #  target generation = 500
 # 1. effect at this generation:
-# only if fitness score pass new height by 5% 3 times, increase body dimension
+# only if fitness score pass new height multiple times, increase body dimension
 # otherwise, keep adapting.
 
 best_last_round = 0
@@ -24,10 +24,11 @@ def body_dimension(generation=0, fitness_scores=[0]):
     global best_last_round, body_dimension_n, fitness_score_surpass_time
     fitness_score = np.median(fitness_scores)
     cprint(f"Median fitness score this round: {fitness_score}.")
-    if fitness_score > (body_dimension_n+1)/body_dimension_n * 1.05 * best_last_round:
+    # if fitness_score > (body_dimension_n+1)/body_dimension_n * 1.05 * best_last_round: # this is too harsh, since the body doesn't get bigger.
+    if fitness_score > best_last_round:
         fitness_score_surpass_time += 1
         cprint(title=f"Good News", msg=f"fitness score hit threshold {fitness_score_surpass_time} time(s).", code="OKGREEN")
-        if fitness_score_surpass_time>3:
+        if fitness_score_surpass_time>max(1,30-body_dimension_n):
             fitness_score_surpass_time = 0
             body_dimension_n = body_dimension_n + 1
             best_last_round = fitness_score
