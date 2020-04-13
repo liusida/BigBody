@@ -18,6 +18,8 @@ for generation in range(10000):
     if folder is None:
         break
     generation_filename = f"{folder}/mutation.json"
+    if not os.path.exists(generation_filename):
+        break
     with open(generation_filename, "r", encoding="UTF-8") as f:
         generation_config = json.load(f)
 
