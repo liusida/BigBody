@@ -200,3 +200,29 @@ Restart BBE with population of 80. random seed 803.
 Terminate BBC.
 Start BBG. with new fitness function f= z_offset * 10 + sqrt(x_offset^2 + y_offset^2). with 7 gpus. random seed 804.
 
+## Apr 13. (1)
+
+Try shorter evaluation time. since we have z_offset*10 to provent falling already.
+Change BBG's base.vxa. t=3. random=802. Start over. v04131008
+
+## Apr 13. (2)
+
+BB3 has a good start, seems have potential to make it.
+
+Copy BB3 to BBH. delete generation after 60. using not newest strategy: update fitness function, use mutation 9,0.1, population 80, not increase dim until at least as good as previous best. no resource.
+start with only 2 gpus on dg-gpunode05.
+
+## Apr 14. (1)
+
+BBF started suffer from the same problem, fitness score peak and then recess.
+Till now we only have BBF 16x, 
+
+OK, change plan, let's revisit this later. Do several 30x robots with expansion instead.
+
+
+# ONLY do 30x30x30.
+
+## Apr 14. (2)
+
+Start BBI, 30x30x30, with expansion, population=40, evaluation_time=5sec, fitness_function=z*10+sqrt(x^2+y^2), TempPeriod=0.2.
+go

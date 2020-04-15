@@ -4,6 +4,7 @@
     <HeapSize>0.5</HeapSize>
   </GPU>
   <Simulator>
+    <EnableExpansion>1</EnableExpansion>
     <EnableTargetCloseness>0</EnableTargetCloseness>
     <FitnessFunction>
       <mtCONST>0</mtCONST>
@@ -37,7 +38,7 @@
       <StopConditionFormula>
         <mtSUB>
           <mtVAR>t</mtVAR>
-          <mtCONST>10</mtCONST>
+          <mtCONST>5</mtCONST>
         </mtSUB>
       </StopConditionFormula>
     </StopCondition>
@@ -99,57 +100,6 @@
           <uDynamic>0.5</uDynamic>
         </Mechanical>
       </Material>
-      <Material ID="2">
-        <MatType>0</MatType>
-        <Name>LightFat</Name>
-        <Display>
-          <Red>1.0</Red>
-          <Green>1.0</Green>
-          <Blue>1.0</Blue>
-          <Alpha>0.5</Alpha>
-        </Display>
-        <Mechanical>
-          <MatModel>0</MatModel>
-          <Elastic_Mod>3e+07</Elastic_Mod>
-          <Plastic_Mod>0</Plastic_Mod>
-          <Yield_Stress>0</Yield_Stress>
-          <FailModel>0</FailModel>
-          <Fail_Stress>0</Fail_Stress>
-          <Fail_Strain>0</Fail_Strain>
-          <Density>1e+04</Density>
-          <Poissons_Ratio>0.35</Poissons_Ratio>
-          <CTE>0</CTE>
-          <MaterialTempPhase>0</MaterialTempPhase>
-          <uStatic>1</uStatic>
-          <uDynamic>0.5</uDynamic>
-        </Mechanical>
-      </Material>
-      <Material ID="3">
-        <MatType>0</MatType>
-        <Name>Fat</Name>
-        <Display>
-          <Red>0.0</Red>
-          <Green>1.0</Green>
-          <Blue>1.0</Blue>
-          <Alpha>0.8</Alpha>
-        </Display>
-        <Mechanical>
-          <MatModel>0</MatModel>
-          <Elastic_Mod>3e+06</Elastic_Mod>
-          <Plastic_Mod>0</Plastic_Mod>
-          <Yield_Stress>0</Yield_Stress>
-          <FailModel>0</FailModel>
-          <Fail_Stress>0</Fail_Stress>
-          <Fail_Strain>0</Fail_Strain>
-          <Density>1e+06</Density>
-          <Poissons_Ratio>0.35</Poissons_Ratio>
-          <CTE>0</CTE>
-          <MaterialTempPhase>0</MaterialTempPhase>
-          <uStatic>1</uStatic>
-          <uDynamic>0.5</uDynamic>
-        </Mechanical>
-      </Material>
-
     </Palette>
     <Structure Compression="ASCII_READABLE">
       <X_Voxels>6</X_Voxels>
