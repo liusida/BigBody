@@ -1,19 +1,26 @@
 from exp_settings import *
 import lxml.etree as etree
-import re, os, json
+import re, os, json, glob
 import voxelyze as vx
 import matplotlib.pyplot as plt
 import matplotlib.ticker as plticker
 import numpy as np
 # experiment_name = "v040711"
 
+generation_folders = glob.glob(f"data/experiment_{experiment_name}/generation_*")
+print(f"data/{experiment_name}/generation_*")
+generations = []
+for f in generation_folders:
+    ff = f.split('/')
+    generations.append(int(re.search(r'\d+', ff[-1]).group()))
+generations.sort()
 x = []
 x1 = []
 x2 = []
 body = []
 mut = []
 pop = []
-for generation in range(10000):
+for generation in generations:
     folder = vx.foldername_generation(experiment_name, generation)
     if folder is None:
         break
@@ -25,7 +32,7 @@ for generation in range(10000):
 
     body_n = generation_config["body_dimension"][0]
     target_population_size = generation_config["target_population_size"]
-    print(f"Body Dimension: {body_n}")
+    print(f"G {generation}, Body Dimension: {body_n}")
     report_filename = f"{folder}/report/output.xml"
     if not os.path.exists(report_filename):
         break
@@ -77,7 +84,6 @@ pop = np.array(pop)
 pop = pop * large_f / large_p
 
 xx = list(range(len(x)))
-print(len(xx), len(body))
 plt.plot(xx,body, label=f"body: {large_b}")
 plt.plot(xx,mut, label=f"mutate: {large_m}")
 plt.plot(xx,pop, label=f"pop: {large_p}")
