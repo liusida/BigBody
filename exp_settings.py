@@ -32,8 +32,8 @@ def mutation_rate(generation=0):
 
 # 3. effect at next generation:
 def target_population_size(generation=0):
-    return 2
+    return 40
 
 # =================== cannot change during evolution: =======================
-experiment_name = "v04142009"
+experiment_name = "BB001"
 hidden_layers = [10,10,10]

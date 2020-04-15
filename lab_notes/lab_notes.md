@@ -224,5 +224,5 @@ OK, change plan, let's revisit this later. Do several 30x robots with expansion 
 
 ## Apr 14. (2)
 
-Start BBI, 30x30x30, with expansion, population=40, evaluation_time=5sec, fitness_function=z*10+sqrt(x^2+y^2), TempPeriod=0.2.
+Start BBI, random_seed=1001, 30x30x30, with expansion, population=40, evaluation_time=5sec, fitness_function=z*10+sqrt(x^2+y^2), TempPeriod=0.2.
 go
