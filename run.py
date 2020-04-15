@@ -20,7 +20,7 @@ import shutil, random, os
 generation = 0
 
 try:
-    from exp_settings import *
+    from exp_settings_6x_to_30x import *
 except:
     experiment_name = "v040708"
     target_population_size = 128

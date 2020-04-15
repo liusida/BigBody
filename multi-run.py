@@ -30,7 +30,7 @@ def mutation_rate(generation=0):
 outer_species = 100
 inner_generation = 50
 
-for current_run in range(outer_species):
+for current_run in range(2,outer_species):
     random.seed(current_run)
     np.random.seed(current_run)
     experiment_name = f"MULTI_{current_run}"
@@ -61,7 +61,7 @@ for current_run in range(outer_species):
                 msg += f"{evolution.population['genotype'][robot_id]['firstname']} {evolution.population['genotype'][robot_id]['lastname']}'s fitness score: {sorted_result['fitness'][i]:.1e} \n"
         print(msg, flush=True)
 
-        if g_id > inner_generation-1:
+        if g_id >= inner_generation-2:
             # record a brief history for the bestfit
             print("recording...")
             vx.record_bestfit_history(experiment_name, generation, robot_id=sorted_result["id"][0], stopsec=2)
