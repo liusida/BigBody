@@ -1,12 +1,14 @@
 from exp_settings import *
 import lxml.etree as etree
-import re, os, json, glob
+import re, os, json, glob, sys
 import voxelyze as vx
 import matplotlib.pyplot as plt
 import matplotlib.ticker as plticker
 import numpy as np
 # experiment_name = "v040711"
 
+if len(sys.argv)>1:
+    experiment_name = sys.argv[1]
 generation_folders = glob.glob(f"data/experiment_{experiment_name}/generation_*")
 print(f"data/{experiment_name}/generation_*")
 generations = []
@@ -90,7 +92,7 @@ plt.plot(xx,pop, label=f"pop: {large_p}")
 plt.legend()
 plt.ylabel("Travel Distance")
 plt.xlabel("Generation")
-plt.savefig("boxplot.png")
+plt.savefig(f"{experiment_name}_travel_distance.png")
 plt.close()
 
 plt.figure(figsize=(9,6))
@@ -98,7 +100,7 @@ pboxplot = plt.boxplot(x1, showfliers=False)
 plt.xticks(ticks, ticks)
 for patch in pboxplot['boxes']:
     patch.set_color("#DDDDDD")
-plt.savefig("boxplot_num_voxels.png")
+plt.savefig(f"{experiment_name}_boxplot_num_voxels.png")
 plt.close()
 
 plt.figure(figsize=(9,6))
@@ -108,5 +110,5 @@ plt.xlabel("Generation")
 plt.ylabel("Height of the Center of Mass in the end.")
 for patch in pboxplot['boxes']:
     patch.set_color("#DDDDDD")
-plt.savefig("boxplot_end_z.png")
+plt.savefig(f"{experiment_name}_boxplot_end_z.png")
 plt.close()

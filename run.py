@@ -14,7 +14,7 @@
 # write the next generation of population with high fitnesses and mutants
 
 import voxelyze as vx
-from voxelyze.evolution.cppn.CPPNEvolution import CPPNEvolution
+from voxelyze.evolution.cppn_alife.CPPNEvolution import CPPNEvolution
 import numpy as np
 import shutil, random, os
 generation = 0

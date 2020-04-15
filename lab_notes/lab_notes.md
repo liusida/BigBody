@@ -224,5 +224,17 @@ OK, change plan, let's revisit this later. Do several 30x robots with expansion 
 
 ## Apr 14. (2)
 
-Start BBI, random_seed=1001, 30x30x30, with expansion, population=40, evaluation_time=5sec, fitness_function=z*10+sqrt(x^2+y^2), TempPeriod=0.2.
+Start BBI, random_seed=1001, 30x30x30, with expansion, population=40, evaluation_time=3sec, fitness_function=z*10+sqrt(x^2+y^2), TempPeriod=0.2, No Collision.
+(this fitness function is proven to prevent falling strategy, so use 3sec.)
 go
+
+Start BBJ, start from BBG's checkpoint, unsample and continue evolve. random_seed=802 but not important. parameters are the same with BBI.
+
+## Apr 14. (3)
+
+Idea another paper: It will be worth to compare different choices of population size. evolving 6x6x6 is fast. so it is possible to see in the same wall clock time, compare the achievement across different population sizes. I guess there will be a sweet point, since too large is slow every generation, and too small there's not enough diversity.
+
+(laptop with 1 GPU)
+6x6x6, pop=1000, 5 minutes per generation, 1.9e-01 after 46 minutes.
+6x6x6, pop=100, 1 minutes per generation, 
+
